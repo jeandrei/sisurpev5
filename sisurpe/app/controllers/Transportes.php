@@ -56,7 +56,7 @@
       $dados = $this->transporteModel->getDadosAlunoLinha($id);   
       // se for o mesmo id do usuário logado eu permito a exclusão caso contrário bloqueio
       //echo $dados->$aluno_id;
-      if($dados->user_id != $_SESSION[DB_NAME . '_user_id']){            
+      if($dados->user_id != $_SESSION[SE . '_user_id']){            
         die("Você não tem permissão para excluir este aluno");
       }
       try {

@@ -21,7 +21,7 @@
     }
 
     public function getUserCursosSup(){
-      if($userCursosSup = $this->fusercursossupModel->getCursosUser($_SESSION[DB_NAME . '_user_id'])){
+      if($userCursosSup = $this->fusercursossupModel->getCursosUser($_SESSION[SE . '_user_id'])){
         foreach($userCursosSup as $row) {
           $userCursosSupArray[] = [
             'ucsId' => getData($row->ucsId),
@@ -45,7 +45,7 @@
 
     public function index() {  
       //se o usuário ainda não adicionou nenhuma escola, faço essa verificação para evitar passar para próxima etapa pelo link sem ter adicionado uma escola
-      if(!$this->fuserformacoesModel->getUserFormacoesById($_SESSION[DB_NAME . '_user_id'])){
+      if(!$this->fuserformacoesModel->getUserFormacoesById($_SESSION[SE . '_user_id'])){
         flash('message', 'Você deve adicionar sua formação para informar os dados de curso superior!', 'error'); 
         redirect('fuserformacoes/index');
         die();
@@ -67,7 +67,7 @@
           (getTipoInstituicoes())
           ? getTipoInstituicoes()
           : '',
-        'userId' => $_SESSION[DB_NAME . '_user_id'],
+        'userId' => $_SESSION[SE . '_user_id'],
         'titulo' => 'Curso superior',
         'regioes' => 
           ($this->regiaoModel->getRegioes())
@@ -108,7 +108,7 @@
           'areaId' => post('areaId'),
           'nivelId' => post('nivelId'),
           'cursoId' => post('cursoId'),
-          'userId' => $_SESSION[DB_NAME . '_user_id'],
+          'userId' => $_SESSION[SE . '_user_id'],
           'titulo' => 'Curso superior',
           'regioes' => 
             ($this->regiaoModel->getRegioes())
@@ -246,7 +246,7 @@
                 'path' => 'uploads/diplomas/',
                 'extensions' => ["jpeg","jpg","png","pdf"],
                 'maxsize' => 2097152,
-                'name' => $_SESSION[DB_NAME . '_user_name'] . "_" . $newId
+                'name' => $_SESSION[SE . '_user_name'] . "_" . $newId
               ]);        
               //ser retornou sucesso é que fez o upload do arquivo e o mesmo retorna o caminho do arquivo
               if($file['sucess']){
@@ -283,7 +283,7 @@
           $this->view('fusercursosuperiores/add', $data);
         }            
       } else {        
-        if(!$this->fuserformacoesModel->getUserFormacoesById($_SESSION[DB_NAME . '_user_id'])){
+        if(!$this->fuserformacoesModel->getUserFormacoesById($_SESSION[SE . '_user_id'])){
           flash('message', 'Você deve adicionar sua formação para informar os dados de curso superior!', 'error'); 
           redirect('fuserformacoes/index');
           die();
@@ -296,7 +296,7 @@
           'areasCurso' => $this->fareacursoModel->getAreasCurso(),
           'nivelCurso' => $this->fnivelcursoModel->getNivelCurso(),
           'tiposInstituicoes' => getTipoInstituicoes(),
-          'userId' => $_SESSION[DB_NAME . '_user_id'],
+          'userId' => $_SESSION[SE . '_user_id'],
           'titulo' => 'Curso superior',
           'regioes' => $this->regiaoModel->getRegioes(),          
           'instituicaoEnsino' => '',

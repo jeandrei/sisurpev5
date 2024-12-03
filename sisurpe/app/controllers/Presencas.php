@@ -28,7 +28,7 @@
         'curso' => $this->inscricaoModel->getInscricaoById($inscricoes_id),
         'presenca_em_andamento' => $this->abrePresencaModel->temPresencaEmAndamento($inscricoes_id),
         'cpf_err' => '',
-        'qrCode' => 'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=' . rawurlencode(URLROOT . '/presencas/qr&presenca_em_andamento=' . $abre_presenca_id . '&userId=' . $_SESSION[DB_NAME . '_user_id']),
+        'qrCode' => 'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=' . rawurlencode(URLROOT . '/presencas/qr&presenca_em_andamento=' . $abre_presenca_id . '&userId=' . $_SESSION[SE . '_user_id']),
       ];  
       $this->view('presencas/index', $data);
     }  

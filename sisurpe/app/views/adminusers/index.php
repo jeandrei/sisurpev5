@@ -56,32 +56,7 @@
             onkeydown="upperCaseF(this)"   
             >
     </div>
-    <!-- COLUNA 2 name-->
-
-     <!-- TIPO DO USUÁRIO -->  
-     <div class="col-lg-2">
-            <label for="type">
-                Buscar tipo
-            </label>
-            <select class="form-control"
-              name="type" 
-              id="type" 
-              class="form-control" 
-              >
-              <option value='NULL'>todos</option>                   
-              <?php              
-              $tipos = array('admin','sec','user','coleta');                    
-              foreach($tipos as $tipo => $value) : ?> 
-                  <option value="<?php echo $value; ?>" 
-                              <?php echo $value == get('type') ? 'selected':'';?>
-                  >
-                      <?php echo $value;?>
-                  </option>
-              <?php endforeach; ?>  
-          </select>
-    </div>
-    <!-- TIPO DO USUÁRIO -->                
-      
+    <!-- COLUNA 2 name-->      
       
     <!-- LINHA PARA O BOTÃO ATUALIZAR -->
     <div class="row" style="margin-top:30px;">
@@ -108,8 +83,7 @@
     <tr>
       <th scope="col">Nome</th>      
       <th scope="col">Email</th>           
-      <th scope="col">Criado em</th> 
-      <th scope="col">Tipo</th>
+      <th scope="col">Criado em</th>
       <th scope="col">Ações</th> 
     </tr>
   </thead>
@@ -119,8 +93,7 @@
           <tr>   
               <td><?php echo $row['name']; ?></td>
               <td><?php echo $row['email']; ?></td>
-              <td><?php echo date('d-m-Y', strtotime($row['created_at'])); ?></td>
-              <td><?php echo $row['type']; ?></td>                     
+              <td><?php echo date('d-m-Y', strtotime($row['created_at'])); ?></td>                                
               <!--BTN EDITAR-->            
               <td style="text-align:right;">
                   <a class="btn btn-success" href="<?php echo URLROOT; ?>/users/edit/<?php echo $row['id'];?>" class="pull-left"> Editar</a>                          

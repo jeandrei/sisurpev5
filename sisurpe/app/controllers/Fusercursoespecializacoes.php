@@ -18,16 +18,16 @@
         'titulo' => 'Pós-Graduações concluídas', 
         'areaId' => '',           
         'user' => 
-          ($_SESSION[DB_NAME . '_user_id'])
-          ? $this->userModel->getUserById($_SESSION[DB_NAME . '_user_id'])
+          ($_SESSION[SE . '_user_id'])
+          ? $this->userModel->getUserById($_SESSION[SE . '_user_id'])
           : '',
         'areas' => 
           ($this->fareasModel->getAreasCurso())
           ? $this->fareasModel->getAreasCurso()
           : '', 
         'userEspCursos' => 
-          ($_SESSION[DB_NAME . '_user_id'])
-          ? $this->fuserEspCursosModel->getUserEspCursos($_SESSION[DB_NAME . '_user_id'])
+          ($_SESSION[SE . '_user_id'])
+          ? $this->fuserEspCursosModel->getUserEspCursos($_SESSION[SE . '_user_id'])
           : '',
         'areaId_err' => '',
         'anoConclusao_err' => '',
@@ -42,23 +42,23 @@
         $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
         $data = [            
           'user' => 
-            ($_SESSION[DB_NAME . '_user_id'])
-            ? $this->userModel->getUserById($_SESSION[DB_NAME . '_user_id'])
+            ($_SESSION[SE . '_user_id'])
+            ? $this->userModel->getUserById($_SESSION[SE . '_user_id'])
             : '',            
           'areas' => 
             ($this->fareasModel->getAreasCurso())
             ? $this->fareasModel->getAreasCurso()
             : '', 
-          'userEspCursos' => ($_SESSION[DB_NAME . '_user_id'])
-            ? $this->fuserEspCursosModel->getUserEspCursos($_SESSION[DB_NAME . '_user_id'])
+          'userEspCursos' => ($_SESSION[SE . '_user_id'])
+            ? $this->fuserEspCursosModel->getUserEspCursos($_SESSION[SE . '_user_id'])
             : '',
           'avancarLink' => URLROOT . '/fuseroutroscursos/index',
           'voltarLink' => URLROOT . '/fusercursoespecializacoes/index',
           'areaId' => post('areaId'),
           'anoConclusao' => post('anoConclusao'),
           'userId' => 
-            ($_SESSION[DB_NAME . '_user_id'])
-            ? $this->userModel->getUserById($_SESSION[DB_NAME . '_user_id'])->id
+            ($_SESSION[SE . '_user_id'])
+            ? $this->userModel->getUserById($_SESSION[SE . '_user_id'])->id
             : '',
           'areaId_err' => '',
           'anoConclusao_err' => '',

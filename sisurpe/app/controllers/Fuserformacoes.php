@@ -17,12 +17,12 @@
 
 		public function index() { 				
 			//se o usuário ainda não adicionou nenhuma escola, faço essa verificação para evitar passar para próxima etapa pelo link sem ter adicionado uma escola
-			if(!$this->fuserescolaModel->getEscolasUser($_SESSION[DB_NAME . '_user_id'])){
+			if(!$this->fuserescolaModel->getEscolasUser($_SESSION[SE . '_user_id'])){
 				flash('message', 'Você deve adicionar uma escola ao ano corrente primeiro!', 'error'); 
 				redirect('fuserescolaanos/index');
 				die();
 			} 
-			$formacoes = $this->fuserformacoesModel->getUserFormacoesById($_SESSION[DB_NAME . '_user_id']);
+			$formacoes = $this->fuserformacoesModel->getUserFormacoesById($_SESSION[SE . '_user_id']);
 			$data = [
 				'titulo' => 'Formação do usuário',
 				'maiorEscolaridade' => 
@@ -34,12 +34,12 @@
 					? $formacoes->tipoEnsinoMedio
 					: '',
 				'userId' => 
-					isset($_SESSION[DB_NAME . '_user_id'])
-					? $_SESSION[DB_NAME . '_user_id']
+					isset($_SESSION[SE . '_user_id'])
+					? $_SESSION[SE . '_user_id']
 					: '',
 				'userformacao' => 
-					($this->fuserformacoesModel->getUserFormacoesById($_SESSION[DB_NAME . '_user_id']))
-					? $this->fuserformacoesModel->getUserFormacoesById($_SESSION[DB_NAME . '_user_id'])
+					($this->fuserformacoesModel->getUserFormacoesById($_SESSION[SE . '_user_id']))
+					? $this->fuserformacoesModel->getUserFormacoesById($_SESSION[SE . '_user_id'])
 					: '',
 				'avancarLink' => 
 					(isset($formacoes->maiorEscolaridade) && ($formacoes->maiorEscolaridade === 'e_superior')) 
@@ -57,8 +57,8 @@
 				unset($data);
 				$data = [
 					'titulo' => 'Formação do usuário',   
-					'userId' => $_SESSION[DB_NAME . '_user_id'],
-					'userformacao' => $this->fuserformacoesModel->getUserFormacoesById($_SESSION[DB_NAME . '_user_id']),
+					'userId' => $_SESSION[SE . '_user_id'],
+					'userformacao' => $this->fuserformacoesModel->getUserFormacoesById($_SESSION[SE . '_user_id']),
 					'maiorEscolaridade' => post('maiorEscolaridade'),
 					'tipoEnsinoMedio' => post('tipoEnsinoMedio'),
 					'avancarLink' => ($_POST['maiorEscolaridade'] == 'e_superior') ? URLROOT .'/fusercursosuperiores/index' : URLROOT .'/fuseroutroscursos/index',

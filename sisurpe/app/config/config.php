@@ -30,6 +30,9 @@ define('SITENAME', 'SISURPE');
 //App Version
 define('APPVERSION', '1.0.0');
 
+//CONSTANTE DE SESSAO PARA EVITAR QUE SISTEMAS DIFERENTES FIQUEM LOGADOS COM A MESMA SESSÃO
+define('SE','sisurpe');
+
 //Certificado padrão
 define('CERTPADRAO', URLROOT . '/uploads/modeloCertificados/padrao.jpg');
 

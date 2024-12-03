@@ -44,12 +44,6 @@
 
       </div> <!-- /container -->
 
-    </main>
-
-    <footer class="container">
-      &copy; <?php echo date("Y"); ?>
-    </footer>
-
-   
+    </main>       
 
 <?php require APPROOT . '/views/inc/footer.php'; ?>

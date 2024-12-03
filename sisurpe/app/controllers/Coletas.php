@@ -20,7 +20,7 @@
 			unset($data);
 			$data = [
 				'titulo'    => 'Coleta de Dados',
-				'escolas' => $this->userescolacoletaModel->getEscolaColetaUserById($_SESSION[DB_NAME . '_user_id']),
+				'escolas' => $this->userescolacoletaModel->getEscolaColetaUserById($_SESSION[SE . '_user_id']),
 				'escolaId' => '',
 				'escolaId_err' => '',
 				'turmaId_err' => ''
@@ -230,8 +230,8 @@
 					? $_POST['escolaid']
 					: '',
 				'escolas' => 
-					($_SESSION[DB_NAME . '_user_id'])
-					? $this->userescolacoletaModel->getEscolaColetaUserById($_SESSION[DB_NAME . '_user_id'])
+					($_SESSION[SE . '_user_id'])
+					? $this->userescolacoletaModel->getEscolaColetaUserById($_SESSION[SE . '_user_id'])
 					: '',
 					'escolaId_err' => '',
 					'turmaId_err' => '',
@@ -254,7 +254,7 @@
 					'turmaId' => trim($_POST['turmaId']),
 					'texto' => trim($_POST['texto']),
 					'bilheteFolha' => $_POST['bilheteFolha'],
-					'escolas' => $this->userescolacoletaModel->getEscolaColetaUserById($_SESSION[DB_NAME . '_user_id']), 
+					'escolas' => $this->userescolacoletaModel->getEscolaColetaUserById($_SESSION[SE . '_user_id']), 
 					'turmas' => $this->turmaModel->getTurmasEscolaById($_POST['escolaId']),               
 					'escolaId_err' => '',
 					'turmaId_err' => '',

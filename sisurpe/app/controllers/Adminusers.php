@@ -5,10 +5,6 @@
 				flash('message', 'Você deve efetuar o login para ter acesso a esta página', 'error'); 
 				redirect('pages/index');
 				die();
-			} else if ((!isAdmin()) && (!isSec())){                
-				flash('message', 'Você não tem permissão de acesso a esta página', 'error'); 
-				redirect('pages/index'); 
-				die();
 			} 
 			$this->userModel = $this->model('User');
 		}     
@@ -26,12 +22,11 @@
 			} 			
 			$options = array(
 				'results_per_page' => 10,
-				'url' => URLROOT . '/adminusers/index.php?page=*VAR*&cpf=' .  get('cpf') .'&name=' . get('name') . '&type=' . get('type'), 
+				'url' => URLROOT . '/adminusers/index.php?page=*VAR*&cpf=' .  get('cpf') .'&name=' . get('name'), 
 				'using_bound_params' => true,
 				'named_params' => array(
 																':cpf' => get('cpf'),
-																':name' => get('name'),
-																':type' => get('type')
+																':name' => get('name')																
 																)     
 			);            
 			$paginate = $this->userModel->getUsers($page, $options);                     

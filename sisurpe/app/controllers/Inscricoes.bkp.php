@@ -73,13 +73,13 @@
           $error['inscricoes_id_err'] = 'Id obrigatório';
       }
 
-      if($this->inscritoModel->verificaJaInscrito($inscricoes_id,$_SESSION[DB_NAME . '_user_id'])){
+      if($this->inscritoModel->verificaJaInscrito($inscricoes_id,$_SESSION[SE . '_user_id'])){
         $error['inscricoes_id_err'] = 'Ops! Usuário já está inscrito no curso!';  
       }
         
       if(empty($error['inscricoes_id_err'])){         
           
-          if($this->inscritoModel->gravaInscricao($inscricoes_id,$_SESSION[DB_NAME . '_user_id'])){ 
+          if($this->inscritoModel->gravaInscricao($inscricoes_id,$_SESSION[SE . '_user_id'])){ 
               $data = [
                   'title' => 'Inscrições Abertas',
                   'description'=> 'Inscrições Abertas',
@@ -111,7 +111,7 @@
         
       if(empty($error['inscricoes_id_err'])){
           
-          if($this->inscritoModel->cancelaInscricao($inscricoes_id,$_SESSION[DB_NAME . '_user_id'])){
+          if($this->inscritoModel->cancelaInscricao($inscricoes_id,$_SESSION[SE . '_user_id'])){
               $data = [
                   'title' => 'Inscrições Abertas',
                   'description'=> 'Inscrições Abertas',
@@ -399,12 +399,12 @@
     }//edit
 
     public function certificado($inscricoes_id){
-      if($this->inscritoModel->estaInscrito($inscricoes_id,$_SESSION[DB_NAME . '_user_id'])){
+      if($this->inscritoModel->estaInscrito($inscricoes_id,$_SESSION[SE . '_user_id'])){
         $data = [
           'curso' => $this->inscricaoModel->getInscricaoById($inscricoes_id),
           'temas' => $this->temaModel->getTemasInscricoesById($inscricoes_id),
-          'usuario' =>$this->userModel->getUserById($_SESSION[DB_NAME . '_user_id']),
-          'presencas' =>$this->inscricaoModel->getPresencasUsuarioById($_SESSION[DB_NAME . '_user_id'],$inscricoes_id)
+          'usuario' =>$this->userModel->getUserById($_SESSION[SE . '_user_id']),
+          'presencas' =>$this->inscricaoModel->getPresencasUsuarioById($_SESSION[SE . '_user_id'],$inscricoes_id)
         ];         
         $this->view('relatorios/certificado', $data);
       } else {
@@ -458,7 +458,7 @@
         $data = [
           'curso' => $this->inscricaoModel->getInscricaoById($inscricoes_id),
           'temas' => $this->temaModel->getTemasInscricoesById($inscricoes_id),
-          'usuario' =>$this->userModel->getUserById($_SESSION[DB_NAME . '_user_id']),
+          'usuario' =>$this->userModel->getUserById($_SESSION[SE . '_user_id']),
           'abre_presencas' => $abrePresencas
         ];            
         $this->view('inscricoes/abrePresencas', $data);
@@ -478,7 +478,7 @@
       $data = [
         'abrePresencaId' => $abrePresenca_id,
         'curso' => $this->abrePresencaModel->getInscricaoById($abrePresenca_id),          
-        'usuario' => $this->userModel->getUserById($_SESSION[DB_NAME . '_user_id']),
+        'usuario' => $this->userModel->getUserById($_SESSION[SE . '_user_id']),
         'inscritos' => $this->inscritoModel->getInscritos($inscricoes_id) 
         
       ];   

@@ -57,7 +57,7 @@
     }
 
     public function show(){
-      if ($dados = $this->dataModel->getAlunosUsuario($_SESSION[DB_NAME . '_user_id'])){   
+      if ($dados = $this->dataModel->getAlunosUsuario($_SESSION[SE . '_user_id'])){   
         foreach($dados as $dado){
           $data[] = [
             'aluno_id' => $dado->aluno_id,
@@ -426,7 +426,7 @@
 
     public function delete($id){        
       $aluno = $this->dataModel->getAlunoById($id);      
-      if($aluno->user_id != $_SESSION[DB_NAME . '_user_id']){
+      if($aluno->user_id != $_SESSION[SE . '_user_id']){
         die("Você não tem permissão para excluir este aluno");
       }      
       if($this->dataModel->deleteAluno($id)){                
@@ -434,7 +434,7 @@
       } else {
         flash('mensagem', 'Falha ao tentar remover o registro', 'alert alert-danger');
       }
-      if ($dados = $this->dataModel->getAlunosUsuario($_SESSION[DB_NAME . '_user_id'])){
+      if ($dados = $this->dataModel->getAlunosUsuario($_SESSION[SE . '_user_id'])){
         foreach($dados as $dado){
           $data[] = [
             'aluno_id' => $dado->aluno_id,

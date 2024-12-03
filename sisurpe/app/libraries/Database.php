@@ -95,6 +95,16 @@
 			return $this->stmt->rowCount();
 		}
 
+    public function getTables(){
+      $this->query("SELECT table_name FROM information_schema.tables WHERE table_schema = '$this->dbname'");
+      $this->execute();
+      $results = $this->resultSet();	
+      foreach($results as $row){
+        $tables[] = $row->table_name;
+      }      
+      return $tables;
+    }
+
 		//upload to database blob type
 		//fileExtensions - Extenções permitidas
 		//allowedSize - Tamanho em bytes permitidos

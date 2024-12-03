@@ -5,6 +5,7 @@
 				//vai procurar na pasta model um arquivo chamado User.php e incluir
 				$this->userModel = $this->model('User');
 				$this->escolaModel = $this->model('Escola');
+        $this->grupoModel = $this->model('Grupo');
 		}
 
 		public function register(){				            
@@ -109,16 +110,7 @@
 			}
 		}
 
-		public function edit($user_id){
-			if((!isLoggedIn())){ 
-					flash('message', 'Você deve efetuar o login para ter acesso a esta página', 'error'); 
-					redirect('pages/index');
-					die();
-			} else if ((!isAdmin()) && (!isSec())){                
-					flash('message', 'Você não tem permissão de acesso a esta página', 'error'); 
-					redirect('pages/index'); 
-					die();
-			} 
+		public function edit($user_id){	 
 			$user = $this->userModel->getUserById($user_id); 				           
 			if($_SERVER['REQUEST_METHOD'] == 'POST'){					
 				$_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
@@ -189,8 +181,7 @@
 					'user_id' => getData($user_id),
 					'name' => strtoupper(getData($user->name)),
 					'email' => getData($user->email),
-					'cpf' => getData($user->cpf),
-					'usertype' => getData($user->type),
+					'cpf' => getData($user->cpf),					
 					'escolas' => $this->escolaModel->getEscolas(),
 					'password' => '',
 					'confirm_password' => '',
@@ -270,24 +261,37 @@
 
 		public function createUserSession($user){
 			// $user->id vem do model na função login() retorna a row com todos os campos
-			// da consulta na tabela users
-			$_SESSION[DB_NAME . '_user_id'] = $user->id;
-			$_SESSION[DB_NAME . '_user_email'] = $user->email;
-			$_SESSION[DB_NAME . '_user_name'] = $user->name;
-			$_SESSION[DB_NAME . '_user_type'] = $user->type;
+      // da consulta na tabela users 
+      // SE é uma constante que vem lá do config\config.php
+      // para evitar que dois sistemas diferentes fiquem logados com o mesmo login  
+      $userPermit = $this->userModel->getUserPermitions($user->id);
+      foreach($userPermit as $permicao){
+        $permitArr[$permicao->tabela] = 
+        [          
+          'ler' => $permicao->ler,
+          'editar' => $permicao->editar,
+          'criar' => $permicao->criar,
+          'apagar' => $permicao->apagar
+        ]; 
+      }
+
+      $_SESSION[SE.'user_permit'] = $permitArr;
+			$_SESSION[SE.'_user_id'] = $user->id;
+			$_SESSION[SE.'_user_email'] = $user->email;
+			$_SESSION[SE.'_user_name'] = $user->name;			
 			redirect('pages/main');
 		}
 
 		public function logout(){
-			unset($_SESSION[DB_NAME . '_user_id']);
-			unset($_SESSION[DB_NAME . '_user_email']);
-			unset($_SESSION[DB_NAME . '_user_name']);
+			unset($_SESSION[SE.'_user_id']);
+			unset($_SESSION[SE.'_user_email']);
+			unset($_SESSION[SE.'_user_name']);
 			session_destroy();
 			redirect('pages/login'); 
 		}
 
 		public function isLoggedIn(){
-			if(isset($_SESSION[DB_NAME . '_user_id'])){
+			if(isset($_SESSION[SE . '_user_id'])){
 				return true;
 			} else {
 				return false;
@@ -382,7 +386,7 @@
 				){
 					// Hash Password criptografa o password
 					$data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);                     
-					$data['email'] = $_SESSION[DB_NAME . '_user_email'];                     
+					$data['email'] = $_SESSION[SE . '_user_email'];                     
 					// Register User
 					if($this->userModel->updatePassword($data)){
 						// Cria a menságem antes de chamar o view va para 
@@ -467,5 +471,95 @@
 				return false;
 			}
 		}
+
+    public function grupos($userId){      
+      $gruposCadastrados = $this->grupoModel->getGrupos();      
+      if($userGrupos = $this->grupoModel->gruposDoUsuario($userId)){
+        foreach($userGrupos as $row){
+          $gruposUsuario[] = [
+            'id' => $row->id,
+            'userId' => $row->userId,
+            'grupoId' => $row->grupoId,
+            'grupo' => $this->grupoModel->getGrupoById($row->grupoId)->grupo    
+          ];
+        }
+      } else {
+        $gruposUsuario = [];
+      }
+      
+      if($_SERVER['REQUEST_METHOD'] == 'POST'){             
+        //SANITIZE POST impede códigos maliciosos        
+        $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+        $data = [ 
+          'userId' => $userId,
+          'usuario' => $this->userModel->getUserById($userId)->name,
+          'grupoId' => post('grupoId'),
+          'gruposUsuario' => $gruposUsuario,
+          'gruposCadastrados' => $gruposCadastrados,
+          'titulo' => 'Grupos do Usuário',
+          'grupoId_err' => ''
+        ];
+
+        if($data['grupoId'] == 'null'){
+          $data['grupoId_err'] = 'Você deve selecionar um grupo';          
+        }
+
+        if(
+          empty($data['grupoId_err'])
+        ){
+          try {
+            if($this->userModel->userPertenceGrupo($data['userId'], $data['grupoId'])){
+              throw new Exception('Ops! O usuário já está neste grupo!');
+            } else {
+              if($this->userModel->addGrupo($data['userId'], $data['grupoId'])){
+                flash('message', 'Dados atualizados com sucesso!');                     
+                redirect('users/grupos/'.$userId);
+              } else {
+                throw new Exception('Ops! Algo deu errado ao tentar adicionar o grupo!');
+              }
+            }     
+          } catch (Exception $e) {
+            $erro = 'Erro: '.  $e->getMessage(). "\n";
+            flash('message', $erro,'error');
+            $this->view('users/grupos',$data);
+          }   
+        } else {
+          $this->view('users/grupos',$data);
+        }      
+
+      } else {        
+        $data = [ 
+          'userId' => $userId,
+          'usuario' => $this->userModel->getUserById($userId)->name,
+          'grupoId' => '',
+          'gruposUsuario' => $gruposUsuario,
+          'gruposCadastrados' => $gruposCadastrados,
+          'titulo' => 'Grupos do Usuário',
+          'grupoId_err' => ''
+        ];
+        $this->view('users/grupos',$data);
+      }
+    }
+
+    public function deleteGrupo(){      
+      $userId = get('userId');
+      $grupoId = get('grupoId');
+      //echo "userId = " . $userId . " grupoId = " . $grupoId;
+      //die();
+      try {
+        if($this->userModel->deleteGrupoUsuario($userId, $grupoId)){
+          flash('message', 'Grupo removido com sucesso!');                     
+          redirect('users/grupos/'.$userId);
+        } else {
+          throw new Exception('Ops! Algo deu errado ao tentar excluir o grupo!');          
+        }     
+      } catch (Exception $e) {
+        $erro = 'Erro: '.  $e->getMessage(). "\n";
+        flash('message', $erro,'error');
+        $this->view('users/grupos',$data);
+      }      
+    }
+
+
 	}   
 ?>

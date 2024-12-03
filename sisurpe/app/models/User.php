@@ -157,8 +157,7 @@
 					id,
 					name,
 					email,
-					cpf,
-					type 
+					cpf
 				FROM 
 					users 
 				WHERE 
@@ -255,6 +254,60 @@
 			} 
 		}
 
+    /*Deleta todos os grupos do usuário  */
+    public function delGruposUsuario($userId){  
+      if(!$this->gruposDoUsuario($userId)){        
+        return true;
+      }
+      $this->db->query('DELETE FROM usersGrupos WHERE userId = :userId');				
+			$this->db->bind(':userId', $userId);
+			$this->db->execute();				
+			if($this->db->rowCount() > 0){
+				return true;
+			} else {
+				return false;
+			}
+    }
+
+    //Adiciona um usuário em um grupo
+    public function addGrupo($userId, $grupoId){
+      $this->db->query('INSERT INTO usersGrupos (userid, grupoId) VALUES (:userid, :grupoId)');      
+      $this->db->bind(':userid',$userId);
+      $this->db->bind(':grupoId',$grupoId);        
+      if($this->db->execute()){
+        return true;
+      } else {
+        return false;
+      }
+    }
+
+    //Retorna true se um usuário já pertence a um grupo
+    public function userPertenceGrupo($userId, $grupoId){
+      $this->db->query('SELECT * FROM usersGrupos WHERE userId = :userId AND grupoId = :grupoId'); 
+			$this->db->bind(':userId', $userId);
+      $this->db->bind(':grupoId', $grupoId);
+			$this->db->execute();
+			if($this->db->rowCount() > 0){
+				return true;
+			} else {
+				return false;
+			}
+    }
+
+    public function deleteGrupoUsuario($userId, $grupoId){    
+      //echo "userId = " . $userId . " grupoId = " . $grupoId;
+      //die();
+      $this->db->query('DELETE FROM usersGrupos WHERE userId = :userId AND grupoId = :grupoId');				
+			$this->db->bind(':userId', $userId);
+      $this->db->bind(':grupoId', $grupoId);							
+      if($this->db->execute()){
+				return true;
+			} else {        
+				return false;
+			}
+    }
+
+
 		//FUNÇÃO QUE EXECUTA A SQL PAGINATE PARA FUNCIONAR O BIND TEM QUE COLOCAR O  PARÂMETRO using_bound_params' => true lá no controller
 		public function getUsers($page, $options){ 			
 			$bind = [];
@@ -262,8 +315,7 @@
 				SELECT 
 						users.id,
 						users.name,
-						users.email,
-						users.type,
+						users.email,						
 						users.created_at 
 				FROM 
 						users 
@@ -277,10 +329,7 @@
 				$sql .= " AND users.name LIKE CONCAT(:name, '%')";
 				$bind += [':name' => $options['named_params'][':name']]; 
 			}
-			if(($options['named_params'][':type']) != 'NULL' && ($options['named_params'][':type']) != ''){
-				$sql .= " AND users.type = :userType";
-				$bind += [':type' => $options['named_params'][':type']];  						  
-			}
+			
 			$sql .= " ORDER BY name ASC";
 			
 			try{
@@ -297,6 +346,43 @@
 			$this->pag->execute();
 			//RETORNA A PAGINAÇÃO
 			return $this->pag;
-		}		
+		}	
+    
+    public function getUserPermitions($userId){
+      $this->db->query("
+        SELECT 
+          *
+        FROM 
+          grupoAcaoTabela gat 
+        WHERE 
+        EXISTS (
+          SELECT 
+          *
+          FROM 
+          usersGrupos ug 
+          WHERE 
+          ug.grupoId = gat.grupoId 
+          AND 
+          ug.userId = :userId
+        )
+        AND 
+        (
+        gat.ler = 's'
+        OR 
+        gat.editar = 's'
+        OR 
+        gat.criar = 's'
+        OR 
+        gat.apagar = 's')
+      ");      
+      $this->db->bind(':userId', $userId);
+      $result = $this->db->resultSet();
+			if($this->db->rowCount() > 0){
+				return $result;
+			} else {
+				return false;
+			}
+    }
+
 	}//class
 ?>

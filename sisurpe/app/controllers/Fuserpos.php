@@ -19,7 +19,7 @@
 
     public function index() {  
       //se o usuário ainda não adicionou nenhuma escola, faço essa verificação para evitar passar para próxima etapa pelo link sem ter adicionado uma escola
-      if(!$this->fusercursossupModel->getUserFormacoesById($_SESSION[DB_NAME . '_user_id'])){
+      if(!$this->fusercursossupModel->getUserFormacoesById($_SESSION[SE . '_user_id'])){
         flash('message', 'Você deve adicionar um curso superior primeiro primeiro!', 'error'); 
         redirect('fusercursosuperiores/index');
         die();
@@ -35,7 +35,7 @@
           empty($data['pos_err'])
         ){
           try {
-            if($this->fuserposModel->register($_POST['pos'],$_SESSION[DB_NAME . '_user_id'])){
+            if($this->fuserposModel->register($_POST['pos'],$_SESSION[SE . '_user_id'])){
               flash('message', 'Pós registrada com sucesso!','success');                        
               redirect('fuserpos/index');
             } else {                                
@@ -53,7 +53,7 @@
         } 
         
       } else {
-        if($userPos = $this->fuserposModel->getUserPos($_SESSION[DB_NAME . '_user_id'])){
+        if($userPos = $this->fuserposModel->getUserPos($_SESSION[SE . '_user_id'])){
           foreach($userPos as $row){
             $userPosIdArray[] = $row->posId;
           } 

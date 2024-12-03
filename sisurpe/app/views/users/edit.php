@@ -75,32 +75,7 @@
                             value="<?php echo $data['email'];?>"
                             disabled
                         >
-                    </div>
-                    
-                    <!-- TIPO DO USUÁRIO -->          
-                    <div class="form-group"> 
-                        <label 
-                            for="usertype"><b class="obrigatorio">* </b>Tipo: 
-                        </label>
-                        <select class="form-control form-control-lg"
-                            name="usertype" 
-                            id="usertype" 
-                            class="form-control" 
-                            onchange="checkIfColeta(this)"
-                            >                   
-                            <?php 
-                            $tipos = array('admin','sec','user','coleta');                    
-                            foreach($tipos as $tipo => $value) : ?> 
-                                <option value="<?php echo $value; ?>" 
-                                            <?php echo $value == $data['usertype'] ? 'selected':'';?>
-                                >
-                                    <?php echo $value;?>
-                                </option>
-                            <?php endforeach; ?>  
-                        </select>
-                    </div>
-                    <!-- TIPO DO USUÁRIO --> 
-
+                    </div>          
 
                     <!-- row escola-->
                     <div class="container-fluid escolaUsuario">   
@@ -178,14 +153,19 @@
                         <span class="invalid-feedback">
                             <?php echo $data['confirm_password_err']; ?>
                         </span>
-                    </div>  
+                    </div> 
                     
-                    <!--BUTTONS-->
-                    <div class="row">
-                        <div class="col">                            
-                            <input type="submit" value="Atualizar" class="btn btn-success btn-block">                        
-                        </div>
-                    </div>
+                    <!-- BOTÕES -->
+                    <div class="form-group mt-3 mb-3">
+                        <button type="submit" class="btn btn-success"><i class="fa fa-floppy-disk"></i> Enviar</button>
+                        <a href="<?php echo URLROOT ?>/adminusers">
+                            <button type="button" class="btn bg-warning"><i class="fa fa-backward"></i> Voltar</button>
+                        </a>
+                        <a href="<?php echo URLROOT; ?>/users/grupos/<?php echo $data['user_id'];?>">
+                            <button type="button" class="btn bg-primary text-white"><i class="fa fa-user-group"></i> Grupos</button>
+                        </a>      
+                    </div>   
+                    <!-- BOTÕES -->   
 
                 </form>
             </div>

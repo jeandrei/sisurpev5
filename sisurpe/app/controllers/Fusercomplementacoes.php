@@ -15,9 +15,9 @@
     public function index(){   
       $data = [
         'titulo' => 'Formação/Complementação pedagógica ',            
-        'user' => $this->userModel->getUserById($_SESSION[DB_NAME . '_user_id']),
+        'user' => $this->userModel->getUserById($_SESSION[SE . '_user_id']),
         'complementacoes' => $this->fcomplementacaoModel->getComplementacoes(), 
-        'userComplementacoes' => $this->fusercomplementacoesModel->getUserComplementacoes($_SESSION[DB_NAME . '_user_id']),
+        'userComplementacoes' => $this->fusercomplementacoesModel->getUserComplementacoes($_SESSION[SE . '_user_id']),
         'avancarLink' => URLROOT . '/fuserpos/index',
         'voltarLink' => URLROOT . '/fusercursosuperiores/index',
         'cpId' => '',
@@ -30,13 +30,13 @@
       if($_SERVER['REQUEST_METHOD'] == 'POST'){ 
         $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
         $data = [            
-          'user' => $this->userModel->getUserById($_SESSION[DB_NAME . '_user_id']),            
+          'user' => $this->userModel->getUserById($_SESSION[SE . '_user_id']),            
           'complementacoes' => $this->fcomplementacaoModel->getComplementacoes(),
-          'userComplementacoes' => $this->fusercomplementacoesModel->getUserComplementacoes($_SESSION[DB_NAME . '_user_id']),
+          'userComplementacoes' => $this->fusercomplementacoesModel->getUserComplementacoes($_SESSION[SE . '_user_id']),
           'avancarLink' => URLROOT . '/fuserpos/index',
           'voltarLink' => URLROOT . '/fusercursosuperiores/index',
           'cpId' => post('cpId'),
-          'userId' => $this->userModel->getUserById($_SESSION[DB_NAME . '_user_id'])->id
+          'userId' => $this->userModel->getUserById($_SESSION[SE . '_user_id'])->id
         ];
 
         if($data['cpId'] == 'null'){
@@ -74,7 +74,7 @@
 
     public function delete($_fucpId){        
       try {
-        if($this->fusercomplementacoesModel->delete($_fucpId,$_SESSION[DB_NAME . '_user_id'])){           
+        if($this->fusercomplementacoesModel->delete($_fucpId,$_SESSION[SE . '_user_id'])){           
           flash('message', 'Formação/Complementação removida com sucesso!','success');                     
           redirect('fusercomplementacoes/index');
         } else {                        

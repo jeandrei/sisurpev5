@@ -17,9 +17,9 @@
         'escolaId' => '',
         'titulo' => 'Atualização dos dados do servidor para o ano de ',
         'ano' => date("Y"),
-        'user' => $this->userModel->getUserById($_SESSION[DB_NAME . '_user_id']),
+        'user' => $this->userModel->getUserById($_SESSION[SE . '_user_id']),
         'escolas' => $this->escolaModel->getEscolas(),
-        'userEscolas' => $this->fuserescolaModel->getEscolasUser($_SESSION[DB_NAME . '_user_id']),
+        'userEscolas' => $this->fuserescolaModel->getEscolasUser($_SESSION[SE . '_user_id']),
         'avancarLink' => URLROOT . '/fuserformacoes/index',
         'escolaId_err' => ''
       ];        
@@ -32,12 +32,12 @@
         $data = [
           'titulo' => 'Atualização dos dados do servidor para o ano de ',
           'ano' => date("Y"),
-          'user' => $this->userModel->getUserById($_SESSION[DB_NAME . '_user_id']),
+          'user' => $this->userModel->getUserById($_SESSION[SE . '_user_id']),
           'escolas' => $this->escolaModel->getEscolas(),
-          'userEscolas' => $this->fuserescolaModel->getEscolasUser($_SESSION[DB_NAME . '_user_id']),
+          'userEscolas' => $this->fuserescolaModel->getEscolasUser($_SESSION[SE . '_user_id']),
           'avancarLink' => URLROOT . '/fuserformacoes/index',
           'escolaId' => post('escolaId'),
-          'userId' => $this->userModel->getUserById($_SESSION[DB_NAME . '_user_id'])->id
+          'userId' => $this->userModel->getUserById($_SESSION[SE . '_user_id'])->id
         ];
 
         if($data['escolaId'] == 'null'){
@@ -50,7 +50,7 @@
         {
           try {                               
             //verifico se a escola já foi adicionada ao usuário
-            if($this->fuserescolaModel->getUserEscolaAno($_SESSION[DB_NAME . '_user_id'],$data['escolaId'],date("Y"))){
+            if($this->fuserescolaModel->getUserEscolaAno($_SESSION[SE . '_user_id'],$data['escolaId'],date("Y"))){
               throw new Exception('Ops! Escola já cadastrada!');
             }
 
@@ -75,7 +75,7 @@
 
     public function delete($_escolaId){
       try {
-        if($this->fuserescolaModel->delete($_escolaId,$_SESSION[DB_NAME . '_user_id'])){           
+        if($this->fuserescolaModel->delete($_escolaId,$_SESSION[SE . '_user_id'])){           
           flash('message', 'Escola removida com sucesso!','success');                     
           redirect('fuserescolaanos/index');
         } else {                        

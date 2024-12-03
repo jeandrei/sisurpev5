@@ -18,26 +18,31 @@
     public function index(){ 
       unset($data);
       $inscricoesArr = $this->inscricaoModel->getInscricoes();
-      foreach($inscricoesArr as $row){
-        $inscricoes[] = [
-          'id' => $row->id,
-          'nome_curso' => $row->nome_curso,
-          'descricao' => $row->descricao,
-          'data_inicio' => $row->data_inicio,
-          'data_termino' => $row->data_termino,
-          'numero_certificado' => $row->numero_certificado,
-          'localEvento' => $row->localEvento,
-          'periodo' => $row->periodo,
-          'fase' => $row->fase,
-          'horario' => $row->horario,
-          'usuarioInscrito' => $this->inscritoModel->estaInscrito($row->id,$_SESSION[DB_NAME . '_user_id']),
-          'usuarioTemPresenca' => $this->inscricaoModel->getPresencasUsuarioById($_SESSION[DB_NAME . '_user_id'],$row->id),
-          'existeInscritos' => $this->inscritoModel->existeInscritos($row->id),
-          'existePresenca' => $this->presencaModel->getPresencas($row->id),
-          'existePresencaEmAndamento' => $this->abrePresencaModel->temPresencaEmAndamento($row->id),
-          'cargaHoraria' => $this->temaModel->getTotalCargaHoraria($row->id)
-        ];
-      }      
+      if($inscricoesArr){
+        foreach($inscricoesArr as $row){
+          $inscricoes[] = [
+            'id' => $row->id,
+            'nome_curso' => $row->nome_curso,
+            'descricao' => $row->descricao,
+            'data_inicio' => $row->data_inicio,
+            'data_termino' => $row->data_termino,
+            'numero_certificado' => $row->numero_certificado,
+            'localEvento' => $row->localEvento,
+            'periodo' => $row->periodo,
+            'fase' => $row->fase,
+            'horario' => $row->horario,
+            'usuarioInscrito' => $this->inscritoModel->estaInscrito($row->id,$_SESSION[SE . '_user_id']),
+            'usuarioTemPresenca' => $this->inscricaoModel->getPresencasUsuarioById($_SESSION[SE . '_user_id'],$row->id),
+            'existeInscritos' => $this->inscritoModel->existeInscritos($row->id),
+            'existePresenca' => $this->presencaModel->getPresencas($row->id),
+            'existePresencaEmAndamento' => $this->abrePresencaModel->temPresencaEmAndamento($row->id),
+            'cargaHoraria' => $this->temaModel->getTotalCargaHoraria($row->id)
+          ];
+        }
+      } else {
+        $inscricoes = false;
+      }
+            
       $data = [
         'title' => 'Inscrições',
         'description'=> 'Inscrições',
@@ -85,11 +90,11 @@
       if(empty($inscricoes_id)){
         $error['inscricoes_id_err'] = 'Id obrigatório';
       }
-      if($this->inscritoModel->verificaJaInscrito($inscricoes_id,$_SESSION[DB_NAME . '_user_id'])){
+      if($this->inscritoModel->verificaJaInscrito($inscricoes_id,$_SESSION[SE . '_user_id'])){
         $error['inscricoes_id_err'] = 'Ops! Usuário já está inscrito no curso!';  
       }        
       if(empty($error['inscricoes_id_err'])){
-        if($this->inscritoModel->gravaInscricao($inscricoes_id,$_SESSION[DB_NAME . '_user_id'])){ 
+        if($this->inscritoModel->gravaInscricao($inscricoes_id,$_SESSION[SE . '_user_id'])){ 
           unset($data);
           $inscricoesArr = $this->inscricaoModel->getInscricoes();
           foreach($inscricoesArr as $row){
@@ -104,8 +109,8 @@
               'periodo' => $row->periodo,
               'fase' => $row->fase,
               'horario' => $row->horario,
-              'usuarioInscrito' => $this->inscritoModel->estaInscrito($row->id,$_SESSION[DB_NAME . '_user_id']),
-              'usuarioTemPresenca' => $this->inscricaoModel->getPresencasUsuarioById($_SESSION[DB_NAME . '_user_id'],$row->id),
+              'usuarioInscrito' => $this->inscritoModel->estaInscrito($row->id,$_SESSION[SE . '_user_id']),
+              'usuarioTemPresenca' => $this->inscricaoModel->getPresencasUsuarioById($_SESSION[SE . '_user_id'],$row->id),
               'existeInscritos' => $this->inscritoModel->existeInscritos($row->id),
               'existePresenca' => $this->presencaModel->getPresencas($row->id),
               'existePresencaEmAndamento' => $this->abrePresencaModel->temPresencaEmAndamento($row->id),
@@ -136,7 +141,7 @@
         $error['inscricoes_id_err'] = 'Id obrigatório';
       }        
       if(empty($error['inscricoes_id_err'])){          
-        if($this->inscritoModel->cancelaInscricao($inscricoes_id,$_SESSION[DB_NAME . '_user_id'])){
+        if($this->inscritoModel->cancelaInscricao($inscricoes_id,$_SESSION[SE . '_user_id'])){
           unset($data);
           $inscricoesArr = $this->inscricaoModel->getInscricoes();
           foreach($inscricoesArr as $row){
@@ -151,8 +156,8 @@
               'periodo' => $row->periodo,
               'fase' => $row->fase,
               'horario' => $row->horario,
-              'usuarioInscrito' => $this->inscritoModel->estaInscrito($row->id,$_SESSION[DB_NAME . '_user_id']),
-              'usuarioTemPresenca' => $this->inscricaoModel->getPresencasUsuarioById($_SESSION[DB_NAME . '_user_id'],$row->id),
+              'usuarioInscrito' => $this->inscritoModel->estaInscrito($row->id,$_SESSION[SE . '_user_id']),
+              'usuarioTemPresenca' => $this->inscricaoModel->getPresencasUsuarioById($_SESSION[SE . '_user_id'],$row->id),
               'existeInscritos' => $this->inscritoModel->existeInscritos($row->id),
               'existePresenca' => $this->presencaModel->getPresencas($row->id),
               'existePresencaEmAndamento' => $this->abrePresencaModel->temPresencaEmAndamento($row->id),
@@ -509,14 +514,14 @@
     }//edit
     
     public function certificado($inscricoes_id){
-      if($this->inscritoModel->estaInscrito($inscricoes_id,$_SESSION[DB_NAME . '_user_id'])){
-        //$qrUrl = URLROOT . '/inscricoes/certificado&cursoId=' . $data['curso']->id . '&userId=' . $_SESSION[DB_NAME . '_user_id'];       
+      if($this->inscritoModel->estaInscrito($inscricoes_id,$_SESSION[SE . '_user_id'])){
+        //$qrUrl = URLROOT . '/inscricoes/certificado&cursoId=' . $data['curso']->id . '&userId=' . $_SESSION[SE . '_user_id'];       
         $data = [
           'curso' => $this->inscricaoModel->getInscricaoById($inscricoes_id),
           'temas' => $this->temaModel->getTemasInscricoesById($inscricoes_id),
-          'usuario' =>$this->userModel->getUserById($_SESSION[DB_NAME . '_user_id']),
-          'presencas' =>$this->inscricaoModel->getPresencasUsuarioById($_SESSION[DB_NAME . '_user_id'],$inscricoes_id),
-          'qrCode' => 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' . rawurlencode(URLROOT . '/validar&cursoId=' . $this->inscricaoModel->getInscricaoById($inscricoes_id)->id . '&userId=' . $_SESSION[DB_NAME . '_user_id']),
+          'usuario' =>$this->userModel->getUserById($_SESSION[SE . '_user_id']),
+          'presencas' =>$this->inscricaoModel->getPresencasUsuarioById($_SESSION[SE . '_user_id'],$inscricoes_id),
+          'qrCode' => 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' . rawurlencode(URLROOT . '/validar&cursoId=' . $this->inscricaoModel->getInscricaoById($inscricoes_id)->id . '&userId=' . $_SESSION[SE . '_user_id']),
         ];         
         $this->view('relatorios/certificado', $data);
       } else {
@@ -563,7 +568,7 @@
         $data = [
           'curso' => $this->inscricaoModel->getInscricaoById($inscricoes_id),
           'temas' => $this->temaModel->getTemasInscricoesById($inscricoes_id),
-          'usuario' =>$this->userModel->getUserById($_SESSION[DB_NAME . '_user_id']),
+          'usuario' =>$this->userModel->getUserById($_SESSION[SE . '_user_id']),
           'abre_presencas' => $abrePresencas
         ];            
         $this->view('inscricoes/abrePresencas', $data);
@@ -577,7 +582,7 @@
       $data = [
         'abrePresencaId' => $abrePresenca_id,
         'curso' => $this->abrePresencaModel->getInscricaoById($abrePresenca_id),          
-        'usuario' => $this->userModel->getUserById($_SESSION[DB_NAME . '_user_id']),
+        'usuario' => $this->userModel->getUserById($_SESSION[SE . '_user_id']),
         'inscritos' => $this->inscritoModel->getInscritos($inscricoes_id),
         'todosPresentes' => $this->presencaModel->todosPresentes($abrePresenca_id)
       ];   
