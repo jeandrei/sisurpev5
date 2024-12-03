@@ -13,6 +13,7 @@
       $this->abrePresencaModel = $this->model('Abrepresenca');
       $this->presencaModel = $this->model('Presenca');
       $this->certificadoModel = $this->model('Certificado');
+      $this->grupoModel = $this->model('Grupo');
     }
 
     public function index(){ 
@@ -44,7 +45,7 @@
       }
             
       $data = [
-        'title' => 'Inscrições',
+        'titulo' => 'Inscrições',
         'description'=> 'Inscrições',
         'inscricoes' => $inscricoes        
       ];   
@@ -72,7 +73,7 @@
         $results = $paginate->resultset->fetchAll(); 
       }    
       $data = [
-        'title' => 'Inscrições Arquivadas',
+        'titulo' => 'Inscrições Arquivadas',
         'paginate' => $paginate,
         'results'=> $results             
       ];  
@@ -118,7 +119,7 @@
             ];
           }          
           $data = [
-            'title' => 'Inscrições',
+            'titulo' => 'Inscrições',
             'description'=> 'Inscrições',
             'inscricoes' => $inscricoes        
           ];                       
@@ -126,7 +127,7 @@
         }   
       } else {
         $data = [
-          'title' => 'Inscrições Abertas',
+          'titulo' => 'Inscrições Abertas',
           'description'=> 'Inscrições Abertas',
           'inscricoes' => $this->inscricaoModel->getInscricoes()                          
         ];  
@@ -165,7 +166,7 @@
             ];
           }          
           $data = [
-            'title' => 'Inscrições',
+            'titulo' => 'Inscrições',
             'description'=> 'Inscrições',
             'inscricoes' => $inscricoes        
           ];                             
@@ -593,7 +594,7 @@
     /* carrega o formulário para que o  administrador selecione a inscrição que deseja inscrever um usuário*/
     public function inscreverUsuario($user_Id){     
       $data = [
-        'title' => 'Inscrição de usuário',
+        'titulo' => 'Inscrição de usuário',
         'user' => $this->userModel->getUserById($user_Id),        
         'inscricoes' => $this->inscricaoModel->getInscricoes()               
       ];
@@ -716,6 +717,19 @@
           redirect('inscricoes/arquivadas');
           die();
       }     
-    }    
+    } 
+    
+    // Função que valida se o usuário pode ou não apagar um grupo
+    public function getPermicao($acao,$userId){      
+      if(!$this->grupoModel->getPermicao($acao,$userId,'inscricoes')){
+        flash('message', 'Você não tem permissão para '. $acao.' na tabela grupo.', 'error'); 
+        if($acao === 'ler'){
+          redirect('index');
+        } else {
+          redirect('pages/index');
+        }        
+        die();
+      }    	  		
+    }
   }//class Inscricoes
 ?>

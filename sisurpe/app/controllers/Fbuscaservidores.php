@@ -33,7 +33,7 @@
 		public function index(){ 				
 			$limit = 10;
 			$data = [
-				'title' => 'Busca por Servidor',
+				'titulo' => 'Busca por Servidor',
 				'description' => 'Busca por registros de Servidores'          
 			];
 			if(isset($_GET['page'])){  

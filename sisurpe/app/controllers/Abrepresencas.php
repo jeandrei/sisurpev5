@@ -5,11 +5,7 @@
         flash('message', 'Você deve efetuar o login para ter acesso a esta página', 'error'); 
         redirect('pages/index');
         die();
-      } else if ((!isAdmin()) && (!isSec())){                
-        flash('message', 'Você não tem permissão de acesso a esta página', 'error'); 
-        redirect('pages/index'); 
-        die();
-      }  
+      } 
       $this->abrePresencaModel = $this->model('Abrepresenca');    
       $this->inscricaoModel = $this->model('Inscricoe');
       $this->inscritoModel = $this->model('Inscrito');
@@ -20,7 +16,7 @@
     public function index($inscricoes_id){ 
       if($this->inscricaoModel->getInscricaoById($inscricoes_id)->fase == 'FECHADO'){
         $data = [                
-          'title' => 'Abrir presença',
+          'titulo' => 'Abrir presença',
           'description'=> 'Abrir presença para o curso',
           'curso' => isset($inscricoes_id)
                     ? $this->inscricaoModel->getInscricaoById($inscricoes_id)

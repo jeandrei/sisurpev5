@@ -2,18 +2,12 @@
 
   <?php flash('mensagem');?>
 
-  <hr>
-    <div class="p-3 text-center">
-      <h2><?php echo $data['title'];?></h2>
-    </div>
-  <hr>
-
   <!-- SE FOR UM USUÁRIO ADMIN OU SEC ADICIONO O BOTÃO CRIAR INSCRIÇÃO -->
-  <?php if((isset($_SESSION[DB_NAME . '_user_type']))&&((($_SESSION[DB_NAME . '_user_type']) == "admin")||(($_SESSION[DB_NAME . '_user_type']) == "sec"))) : ?>    
+  <?php if(getPermission('inscricoes','criar')) : ?>
     <div class="row mb-3">  
       <div class="col-md-12">
           <a href="<?php echo URLROOT; ?>/inscricoes/add" class="btn btn-primary pull-right ml-2">
-              <i class="fa fa-pencil"></i> Criar uma Inscrição
+              <i class="fa fa-plus"></i> Criar uma Inscrição
           </a>
       
           <a href="<?php echo URLROOT; ?>/inscricoes/arquivadas" class="btn btn-secondary pull-right">
@@ -38,7 +32,7 @@
       <!-- card-body -->
       <div class="card-body">
         <!-- SE FOR UM USUÁRIO ADMIN OU SEC ADICIONO O BOTÃO EDITAR -->
-        <?php if((isset($_SESSION[DB_NAME . '_user_type']))&&((($_SESSION[DB_NAME . '_user_type']) == "admin")||(($_SESSION[DB_NAME . '_user_type']) == "sec"))) : ?>
+        <?php if(getPermission('inscricoes','editar')) : ?>
           <!-- row dos comandos -->
           <div class="row">
             <div class="col-12">
@@ -126,7 +120,7 @@
         <?php endif; ?>
         <!-- FIM SE A FASE FOR CERTIFICADO -->
         <!-- BOTÕES PARA IMPRIMIR AS LISTAS --> 
-        <?php if((isset($_SESSION[DB_NAME . '_user_type']))&&((($_SESSION[DB_NAME . '_user_type']) == "admin")||(($_SESSION[DB_NAME . '_user_type']) == "sec"))) : ?>
+        <?php if(getPermission('inscricoes','editar')) : ?>
           <p class="card-text mt-3">
           <?php if($registro['existeInscritos']) : ?>
             <a href="<?php echo URLROOT; ?>/inscricoes/inscritos/<?php echo $registro['id']?>" class="card-link"  target="_blank">

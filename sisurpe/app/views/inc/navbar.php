@@ -1,14 +1,3 @@
-<?php 
-//$_SESSION[SE.'user_permit'] vem do controller users
-//debug($_SESSION[SE.'user_permit']); 
-function getPermition($table,$action){
-  if(isset($_SESSION[SE.'user_permit'][$table]) && $_SESSION[SE.'user_permit'][$table][$action] == 's'){
-    return true;
-  } else {
-    return false;
-  }
-}
-?>
 <nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark">
   <div class="container-fluid">
     <a class="navbar-brand" href="<?php echo URLROOT; ?>"><?php echo SITENAME; ?></a>
@@ -107,3 +96,9 @@ function getPermition($table,$action){
 
   </div><!-- container-fluid -->
 </nav>
+
+<?php if(isset($data['titulo'])) : ?>
+  <div class="container-fluid bg-secondary text-white p-1 text-center">   
+    <?php echo $data['titulo'];?>
+  </div>
+<?php endif; ?> 

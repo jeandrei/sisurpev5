@@ -13,7 +13,7 @@
     public function index(){         
 			$limit = 10;
 			$data = [
-				'title' => 'Busca por daos de Transporte',
+				'titulo' => 'Busca por daos de Transporte',
 				'description' => 'Busca por registros anuais do Transporte Escolar'          
 			];        
 			if(isset($_GET['page'])) {  

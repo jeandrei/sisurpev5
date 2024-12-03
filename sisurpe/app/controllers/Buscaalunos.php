@@ -12,7 +12,7 @@
     public function index(){
 			$limit = 10;
 			$data = [
-				'title' => 'Busca por alunos',
+				'titulo' => 'Busca por alunos',
 				'description' => 'Busca por registros de alunos'          
 			];         
 			if(isset($_GET['page'])){  

@@ -22,7 +22,7 @@
 					$certificados = 'null';
 				}		
 				$data = [
-					'title' => 'Meus Certificados',
+					'titulo' => 'Meus Certificados',
 					'certificados' => $certificados
 				];				
 				$this->view('userscertificados/index', $data);

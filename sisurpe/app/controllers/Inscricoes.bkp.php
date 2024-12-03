@@ -15,7 +15,7 @@
         
     public function index(){ 
             $data = [
-            'title' => 'Inscrições',
+            'titulo' => 'Inscrições',
             'description'=> 'Inscrições',
             'inscricoes' => $this->inscricaoModel->getInscricoes()               
         ];        
@@ -81,7 +81,7 @@
           
           if($this->inscritoModel->gravaInscricao($inscricoes_id,$_SESSION[SE . '_user_id'])){ 
               $data = [
-                  'title' => 'Inscrições Abertas',
+                  'titulo' => 'Inscrições Abertas',
                   'description'=> 'Inscrições Abertas',
                   'inscricoes' => $this->inscricaoModel->getInscricoes()                      
               ];                        
@@ -90,7 +90,7 @@
           
       } else {
         $data = [
-          'title' => 'Inscrições Abertas',
+          'titulo' => 'Inscrições Abertas',
           'description'=> 'Inscrições Abertas',
           'inscricoes' => $this->inscricaoModel->getInscricoes
           ()                          
@@ -113,7 +113,7 @@
           
           if($this->inscritoModel->cancelaInscricao($inscricoes_id,$_SESSION[SE . '_user_id'])){
               $data = [
-                  'title' => 'Inscrições Abertas',
+                  'titulo' => 'Inscrições Abertas',
                   'description'=> 'Inscrições Abertas',
                   'inscricoes' => $this->inscricaoModel->getInscricoes()
               ];                        
@@ -494,7 +494,7 @@
         die();
       } 
       $data = [
-        'title' => 'Inscrição de usuário',
+        'titulo' => 'Inscrição de usuário',
         'user' => $this->userModel->getUserById($user_Id),        
         'inscricoes' => $this->inscricaoModel->getInscricoes()               
       ];

@@ -23,7 +23,7 @@
       $data = [
         'abre_presenca_id' => $abre_presenca_id, 
         'inscricoes_id' => $inscricoes_id,        
-        'title' => 'Registro de Presenca',
+        'titulo' => 'Registro de Presenca',
         'description'=> 'Registre aqui sua presença',
         'curso' => $this->inscricaoModel->getInscricaoById($inscricoes_id),
         'presenca_em_andamento' => $this->abrePresencaModel->temPresencaEmAndamento($inscricoes_id),

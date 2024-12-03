@@ -482,4 +482,15 @@
       return true;
     }
   }
+
+  //$_SESSION[SE.'user_permit'] vem do controller users
+  //debug($_SESSION[SE.'user_permit']); 
+  function getPermission($table,$action){ 
+    if(isset($_SESSION[SE.'_user_permit'][$table]) && $_SESSION[SE.'_user_permit'][$table][$action] == 's'){     
+      return true;
+    } else {      
+      return false;
+    }
+  }
+  
 ?>

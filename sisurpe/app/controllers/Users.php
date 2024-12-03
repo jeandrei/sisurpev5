@@ -275,7 +275,7 @@
         ]; 
       }
 
-      $_SESSION[SE.'user_permit'] = $permitArr;
+      $_SESSION[SE.'_user_permit'] = $permitArr;
 			$_SESSION[SE.'_user_id'] = $user->id;
 			$_SESSION[SE.'_user_email'] = $user->email;
 			$_SESSION[SE.'_user_name'] = $user->name;			
@@ -424,7 +424,7 @@
 			} 
 			$limit = 10;
 			$data = [
-				'title' => 'Busca por Usuários',
+				'titulo' => 'Busca por Usuários',
 				'description' => 'Busca por registros de Usuários'          
 			]; 
 
@@ -559,7 +559,5 @@
         $this->view('users/grupos',$data);
       }      
     }
-
-
 	}   
 ?>

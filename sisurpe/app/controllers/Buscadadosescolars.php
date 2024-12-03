@@ -13,7 +13,7 @@
     public function index(){ 
 			$limit = 10;
 			$data = [
-				'title' => 'Busca por Dados Anuais',
+				'titulo' => 'Busca por Dados Anuais',
 				'description' => 'Busca por dados inseridos anualmente'          
 			];
 			/** 

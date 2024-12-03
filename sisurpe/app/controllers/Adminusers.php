@@ -12,7 +12,7 @@
 		public function index(){             
 			$limit = 10;			
 			$data = [
-				'title' => 'Busca por Usuários',
+				'titulo' => 'Busca por Usuários',
 				'description' => 'Busca por registros de Usuários'          
 			]; 
 			if(isset($_GET['page'])){
