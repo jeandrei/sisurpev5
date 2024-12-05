@@ -180,7 +180,8 @@
     public function add(){ 
       if($_SERVER['REQUEST_METHOD'] == 'POST'){   
         $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);  
-        $data = [   
+        $data = [ 
+          'titulo' => 'Adicionar uma inscrição',
           'inscricoes_id' => '',
           'nome_curso' => mb_strtoupper(post('nome_curso')),
           'descricao' => mb_strtoupper(post('descricao')),
@@ -259,6 +260,7 @@
               // pega os temas se o usuário estiver adicionando
               $temas = $this->temaModel->getTemasInscricoesById($lastId);
               $data = [
+                'titulo' => 'Adicionar uma inscrição',
                 'nome_curso' => mb_strtoupper(post('nome_curso')),
                 'descricao' => mb_strtoupper(post('descricao')),
                 'data_inicio' => post('data_inicio'),
@@ -305,6 +307,7 @@
         $modelosCertificados = $this->certificadoModel->getCertificados();  
 
         $data = [ 
+          'titulo' => 'Adicionar uma inscrição',
           'inscricoes_id' => '',
           'nome_curso' => '',
           'descricao' => '',
@@ -344,12 +347,16 @@
       }     
     }//add
 
-    public function edit($id){                     
+    public function edit($id){  
+
+      $modelosCertificados = $this->certificadoModel->getCertificados();
+
       if($_SERVER['REQUEST_METHOD'] == 'POST'){           
         $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING); 
         $temas = $this->temaModel->getTemasInscricoesById($id); 
         $editavel = $this->inscricaoModel->inscricaoEditavel($id);  
-        $data = [     
+        $data = [ 
+          'titulo' => 'Editar uma inscrição',    
           'id' => $id,         
           //'inscricoes_id' => $id,            
           'nome_curso' => mb_strtoupper(post('nome_curso')),
@@ -378,7 +385,8 @@
           'carga_horaria_tema_err' => '',
           'formador' => '',
           'formador_err' => '',
-          'certificado_err' => ''
+          'certificado_err' => '',
+          'modelosCertificados' => $modelosCertificados
         ];
         
         //se a data atual for menor que a data de início permito a edição e faço a validação
@@ -436,6 +444,7 @@
               // pega os temas se o usuário estiver adicionando
               $temas = $this->temaModel->getTemasInscricoesById($id);
               $data = [
+                'titulo' => 'Editar uma inscrição', 
                 'nome_curso' => mb_strtoupper(post('nome_curso')),
                 'descricao' => mb_strtoupper(post('descricao')),
                 'data_inicio' => post('data_inicio'),
@@ -463,7 +472,8 @@
                 'carga_horaria_tema_err' => '',
                 'formador' => '',
                 'formador_err' => '',
-                'certificado_err' => ''
+                'certificado_err' => '',
+                'modelosCertificados' => $modelosCertificados
               ];
               flash('message', 'Dados atualizados com sucessso!', 'success');   
               $this->view('inscricoes/edit', $data);  
@@ -478,9 +488,10 @@
         } else {          
           $this->view('inscricoes/edit',$data);
         }   
-      } else { 
+      } else {
         $data = $this->inscricaoModel->getInscricaoById($id);        
         $data = [
+          'titulo' => 'Editar uma inscrição', 
           'editavel' => $this->inscricaoModel->inscricaoEditavel($id),
           'inscricoes_id' => getData($id),
           'nome_curso' => getData($data->nome_curso),
@@ -508,7 +519,8 @@
           'carga_horaria_tema_err' => '',
           'formador' => '',
           'formador_err' => '',
-          'certificado_err' => ''
+          'certificado_err' => '',
+          'modelosCertificados' => $modelosCertificados  
         ];        
         $this->view('inscricoes/edit', $data);
       }     

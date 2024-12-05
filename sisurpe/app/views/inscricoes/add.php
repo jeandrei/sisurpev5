@@ -182,8 +182,8 @@
 
       <div class="col-12 col-md-4 col-lg-4 mt-4">
         <div class="form-group">
-          <button type="button" id="addTema" class="btn btn-primary" onClick="colar()">Colar</button> 
-          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modelos-model">Modelos</button>
+          <button type="button" id="addTema" class="btn btn-primary" onClick="colar()"><i class="fa fa-paste"></i> Colar</button>           
+          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modelosModal"><i class="fa fa-image"></i> Modelos</button>
         </div>
       </div>
 
@@ -195,20 +195,21 @@
   <!-- $data['editavel'] se for verdadeiro é que pode ser editado
   vem de controller\inscricoes -->      
   <?php if($data['editavel']) : ?>
-    <!-- Button trigger modal -->
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addTemaModal" onClick="clearInput()">
-      Adicionar Tema
+    <!-- Button trigger modal -->   
+    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addTemaModal" onClick="clearInput()">
+      <i class="fa fa-puzzle-piece"></i> Adicionar Tema
     </button>        
   <?php else : ?>  
-    <button type="submit" class="btn btn-primary">Gravar</button> 
+    <button type="submit" class="btn btn-primary"><i class="fa fa-floppy-disk"></i> Gravar</button> 
   <?php endif; ?> 
 </form>
 
+<hr>
 
 <!-- msgAddTema elemento para apresentar mensagem para o usuário a respeito do tema -->
 <div role="alert" id="msgAddTema"></div> 
 <!-- adiciona temas pelo jquery no elemento tabelaTemas -->
-<table class="table" id="tabelaTemas"></table>
+<table class="table table-striped table-sm" id="tabelaTemas"></table>
 
 
 <!-- MODAL ADICIONAR TEMA -->
@@ -291,11 +292,15 @@
 <!-- MODAL ADICIONAR TEMA -->
 
 <!-- MODAL MODELOS -->
-<div class="modal fade bd-example-modal-lg" id="modelos-model" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
+<div class="modal fade" id="modelosModal" tabindex="-1" aria-labelledby="modelosModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
     <div class="modal-content">
-			<div class="modal-body">
-        <?php if(isset($data['modelosCertificados'])) : ?>
+      <div class="modal-header">
+        <h5 class="modal-title" id="modelosModalLabel">Modelos</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+      <?php if(isset($data['modelosCertificados'])) : ?>
 						<div class="row">
             <?php foreach($data['modelosCertificados'] as $key => $modelo) : ?> 
 
@@ -322,12 +327,14 @@
             <? endforeach; ?>
 						</div>  
         <?php endif; ?>
-			</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>        
+      </div>
     </div>
   </div>
 </div>
 <!-- MODAL MODELOS -->
-
 
 <script type="text/javascript">
 $(document).ready(function() {  
@@ -348,169 +355,156 @@ function carregaTemas(inscId){
 }//carregaTemas
 
 function gravaTema(id){
-        //Pego os valores dos inputs            
-        let tema=$("#tema").val();  
-        let carga_horaria=$("#carga_horaria_tema").val(); 
-        let formador=$("#formador").val();
+  //Pego os valores dos inputs            
+  let tema=$("#tema").val();  
+  let carga_horaria=$("#carga_horaria_tema").val(); 
+  let formador=$("#formador").val();
 
-        $.ajax({  
-                url: `<?php echo URLROOT; ?>/temas/add/${id}`,                
-                method:'POST',                 
-                data:{                    
-                    tema:tema,
-                    carga_horaria:carga_horaria,
-                    formador:formador                    
-                },         
-                success: function(retorno_php){                     
-                    var responseObj = JSON.parse(retorno_php); 
-                    document.querySelector('.gravar').disabled = true;
-                    carregaTemas();                   
-                    $("#msgAddTema")
-                        .removeClass()  
-                        .addClass(responseObj.classe) 
-                        .html(responseObj.message) 
-                        .fadeIn(2000).fadeOut(2000);
-                        
-                }
-            });//Fecha o ajax
-   }
-
-   function remover(id){
-        const confirma = confirm('Tem certeza que deseja excluir o tema?');
-        
-        if(confirma){
-            $.ajax({  
-            url: `<?php echo URLROOT; ?>/temas/delete/${id}`,                
-            method:'POST',
-            success: function(retorno_php){                     
-                var responseObj = JSON.parse(retorno_php); 
-                carregaTemas();                   
-                $("#msgAddTema")
-                    .removeClass()  
-                    .addClass(responseObj.classe) 
-                    .html(responseObj.message) 
-                    .fadeIn(2000).fadeOut(2000);
-                    
-            }        
-        });//Fecha o ajax
-
-        carregaTemas();
-        }
-        
-   }//remover
-   
-
-    document.getElementById('tema').addEventListener('keyup', validate);
-    document.getElementById('carga_horaria_tema').addEventListener('keyup', validate);
-    document.getElementById('formador').addEventListener('keyup', validate);
-
-       
-
-    function isEmpty(val){    
-        switch (val){
-        case '':
-            return true;
-            break;
-        case null:
-            return true;
-            break;
-        default:
-            return false;
-        }
+  $.ajax({  
+    url: `<?php echo URLROOT; ?>/temas/add/${id}`,                
+    method:'POST',                 
+    data:{                    
+        tema:tema,
+        carga_horaria:carga_horaria,
+        formador:formador                    
+    },         
+    success: function(retorno_php){                         
+      var responseObj = JSON.parse(retorno_php); 
+      document.querySelector('.gravar').disabled = true;
+      carregaTemas();                   
+      $("#msgAddTema")
+        .removeClass()  
+        .addClass(responseObj.classe) 
+        .html(responseObj.message) 
+        .fadeIn(2000).fadeOut(2000);
+            
     }
+  });//Fecha o ajax
+}
 
+function remover(id){
+  const confirma = confirm('Tem certeza que deseja excluir o tema?');  
+  if(confirma){
+  $.ajax({  
+    url: `<?php echo URLROOT; ?>/temas/delete/${id}`,                
+    method:'POST',
+    success: function(retorno_php){                     
+      var responseObj = JSON.parse(retorno_php); 
+      carregaTemas();                   
+      $("#msgAddTema")
+        .removeClass()  
+        .addClass(responseObj.classe) 
+        .html(responseObj.message) 
+        .fadeIn(2000).fadeOut(2000);              
+      }        
+  });//Fecha o ajax
+  carregaTemas();
+  }    
+}//remover   
 
-    function validate(){
-  
-        if(
-            validateTema() &&
-            validateCargaHoraria() &&
-            validateFormador() 
-          )
-            {  
-                document.querySelector('.gravar').disabled = false;    
-            } else {
-                document.querySelector('.gravar').disabled = true;
-            }
-    
+document.getElementById('tema').addEventListener('keyup', validate);
+document.getElementById('carga_horaria_tema').addEventListener('keyup', validate);
+document.getElementById('formador').addEventListener('keyup', validate);
+      
+function isEmpty(val){    
+  switch (val){
+  case '':
+      return true;
+      break;
+  case null:
+      return true;
+      break;
+  default:
+      return false;
+  }
+}
+
+function validate(){
+  if(
+    validateTema() &&
+    validateCargaHoraria() &&
+    validateFormador() 
+    ) {  
+    document.querySelector('.gravar').disabled = false;    
+  } else {
+    document.querySelector('.gravar').disabled = true;
+  }
+}
+
+function validateTema(){
+  const tema = document.getElementById('tema');          
+  if(!isEmpty(tema.value)){  
+    //mínimo 3 caracteres             
+    const re = /(.*[a-z]){3}/i;       
+    if(!re.test(tema.value)){
+      tema.classList.add('is-invalid');
+      return false;
+    } else {
+      tema.classList.remove('is-invalid');
+      return true;
     }
+  }
+}
 
-    function validateTema(){
-        const tema = document.getElementById('tema');          
-        if(!isEmpty(tema.value)){  
-            //mínimo 3 caracteres             
-            const re = /(.*[a-z]){3}/i;       
-            if(!re.test(tema.value)){
-                tema.classList.add('is-invalid');
-                return false;
-            } else {
-                tema.classList.remove('is-invalid');
-                return true;
-            }
-        }
+function validateCargaHoraria(){        
+  const ch = document.getElementById('carga_horaria_tema');         
+  if(!isEmpty(ch.value)){            
+    const re = /^[0-9]*$/;
+    if(ch.value <= 0){
+      ch.classList.add('is-invalid');                
+      return false;
+    } else if(!re.test(ch.value)){
+      ch.classList.add('is-invalid');                
+      return false;
+    } else {
+      ch.classList.remove('is-invalid');
+      return true;
     }
+  }
+}
 
-    function validateCargaHoraria(){        
-        const ch = document.getElementById('carga_horaria_tema');         
-        if(!isEmpty(ch.value)){            
-            const re = /^[0-9]*$/;
-            if(ch.value <= 0){
-                ch.classList.add('is-invalid');                
-                return false;
-            } else if(!re.test(ch.value)){
-                ch.classList.add('is-invalid');                
-                return false;
-            } else {
-                ch.classList.remove('is-invalid');
-                return true;
-            }
-        }
+function validateFormador(){
+  const formador = document.getElementById('formador');        
+  if(!isEmpty(formador.value)){            
+    const re = /^([a-zA-Zà-úÀ-Ú0-9_ ]|-|_|\s){2,100}$/;
+    if(!re.test(formador.value)){
+      formador.classList.add('is-invalid');
+      return false;
+    } else {
+      formador.classList.remove('is-invalid');
+      return true;
     }
+  }
+}
 
-    function validateFormador(){
-        const formador = document.getElementById('formador');        
-        if(!isEmpty(formador.value)){            
-            const re = /^([a-zA-Zà-úÀ-Ú0-9_ ]|-|_|\s){2,100}$/;
-            if(!re.test(formador.value)){
-                formador.classList.add('is-invalid');
-                return false;
-            } else {
-                formador.classList.remove('is-invalid');
-                return true;
-            }
-        }
-    }
-
-
-    function clearInput(){
-        document.getElementById('tema').value = '';
-        document.getElementById('formador').value = '';
-        document.getElementById('carga_horaria_tema').value = '';
-        //foco no primeiro item do modal
-        $("#addTemaModal").on("shown.bs.modal", function(){
-            $(this).find("input").first().focus()
-        })
-    }   
+function clearInput(){
+  document.getElementById('tema').value = '';
+  document.getElementById('formador').value = '';
+  document.getElementById('carga_horaria_tema').value = '';
+  //foco no primeiro item do modal
+  $("#addTemaModal").on("shown.bs.modal", function(){
+    $(this).find("input").first().focus()
+  })
+}   
 
 </script>
 
 <!-- copia a url da imagem para localstorage -->
 <script type="text/javascript">
-  function selectImage(imgName){			
-    let url = imgName; 
-    localStorage.removeItem("imgUrl");
-    localStorage.setItem("imgUrl",url); 
-    colar();
-    $('#modelos-model').modal('hide')
-  }
+function selectImage(imgName){			
+  let url = imgName; 
+  localStorage.removeItem("imgUrl");
+  localStorage.setItem("imgUrl",url); 
+  colar();
+  $('#modelosModal').modal('toggle')
+}
 
-  function colar(){
-    const certificadoInput = document.querySelector('#certificado');
-    const img = localStorage.getItem('imgUrl');
-    certificado.value = img;
-  }    
+function colar(){
+  const certificadoInput = document.querySelector('#certificado');
+  const img = localStorage.getItem('imgUrl');
+  certificado.value = img;
+}    
 </script>
-
 
 <?php require APPROOT . '/views/inc/footer.php'; ?>
 
