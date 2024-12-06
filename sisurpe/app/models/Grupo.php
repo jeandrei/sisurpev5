@@ -71,7 +71,7 @@ class Grupo {
         foreach($gruposUsuario as $grupo){
           $this->db->query("SELECT * FROM grupoAcaoTabela WHERE grupoId = :grupoId AND tabela = :tabela AND ".$acao." = 's'"); 
           $this->db->bind(':grupoId', $grupo->grupoId);
-          $this->db->bind(':tabela', $tabela);
+          $this->db->bind(':tabela', $tabela);         
           $row = $this->db->single();
           if($this->db->rowCount() > 0){            
             return true;

@@ -163,6 +163,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `nascimento` date DEFAULT NULL,
   `email` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL, 
+  `type` varchar(10) DEFAULT 'externo',
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP  
 ) auto_increment=0,
 ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -216,6 +217,7 @@ CREATE TABLE IF NOT EXISTS `grupoAcaoTabela` (
 /*permição de ler, editar, criar, e apagar para o grupo de administradores*/
 INSERT INTO `grupoAcaoTabela` (`grupoId`,`tabela`,`ler`,`editar`,`criar`,`apagar`) VALUES
 (1, 'users','s','s','s','s'),
+(1, 'grupos','s','s','s','s'),
 (1, 'usersGrupos','s','s','s','s');
 
 --

@@ -9,7 +9,7 @@
     document.getElementById('nome_aluno').focus(); 
 </script>
 
-<?php flash('mensagem');?>
+<?php flash('message');?>
 
 <?php
   $paginate = $data['paginate'];

@@ -157,7 +157,8 @@
 					id,
 					name,
 					email,
-					cpf
+					cpf,
+          type
 				FROM 
 					users 
 				WHERE 

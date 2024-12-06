@@ -6,11 +6,7 @@
 				flash('message', 'Você deve efetuar o login para ter acesso a esta página', 'error'); 
 				redirect('users/login');
 				die();
-			} else if ((!isAdmin())){                
-				flash('message', 'Você não tem permissão de acesso a esta página', 'error'); 
-				redirect('pages/sistem'); 
-				die();
-			} 
+			}
 			$this->userEscolaColetaModel = $this->model('Userescolacoleta');
 		}
 		
@@ -81,9 +77,9 @@
 				die();
 			}                   
 		}
-
-		public function getUserEscolaColeta(){  
-			$userId = $_POST['userId'];    
+   
+		public function getUserEscolaColeta(){      
+			$userId = $_POST['userId'];
 			$html = "
 				<thead class='thead-dark'>
 					<tr class='text-center'>

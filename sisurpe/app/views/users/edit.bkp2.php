@@ -7,9 +7,8 @@
 </style>
 
 <script>
-  function checkIfColeta(obj){
-    let coleta = <?php echo $data['coleta'];?>;    
-    if(obj.options[obj.selectedIndex].text == 'interno' && coleta == true){
+  function checkIfColeta(obj){  
+    if(obj.options[obj.selectedIndex].text == 'interno'){
       document.querySelector('.escolaUsuario').style.display = 'block';
     } else {
       document.querySelector('.escolaUsuario').style.display = 'none';
@@ -207,17 +206,19 @@
         </div> 
         
       </div>
-      <!-- Onde é carregado as escolas do usuário -->
-      <table class="table table-striped" id="tabelaEscolasUsuario"></table> 
-    </div>   
-  </fieldset> 
+    </div>
+  </fieldset>
+
+
+  <!-- Onde é carregado as escolas do usuário -->
+  <table class="table table-striped" id="tabelaEscolasUsuario"></table> 
 
   <!-- BOTÕES -->
   <div class="form-group mt-3 mb-3">
     <button type="submit" class="btn btn-success"><i class="fa fa-floppy-disk"></i> Enviar</button>
     <a href="<?php echo URLROOT ?>/adminusers">
       <button type="button" class="btn bg-warning"><i class="fa fa-backward"></i> Voltar</button>
-    </a>    
+    </a>
     <?php if($data['usertype'] === 'interno'): ?>
     <a href="<?php echo URLROOT; ?>/users/grupos/<?php echo $data['user_id'];?>">
       <button type="button" class="btn bg-primary text-white"><i class="fa fa-user-group"></i> Grupos</button>
@@ -231,13 +232,15 @@
 <?php require APPROOT . '/views/inc/footer.php'; ?>
 
 <script>
-$( document ).ready(function() {  
+$( document ).ready(function() {
+  carregaUserEscolaColeta(<?php echo $data['user_id'];?>);
+  return;
   let tipo = document.getElementById('usertype').value; 
-  let coleta = <?php echo $data['coleta'];?>;  
+  let coleta = <?php echo getPermission('coleta','ler');?>;   
   if(tipo == 'interno' && coleta == true){        
     document.querySelector('.escolaUsuario').style.display = 'block';
     carregaUserEscolaColeta(<?php echo $data['user_id'];?>);
-  }
+  } 
 });
 
 function carregaUserEscolaColeta(userId){  
@@ -248,7 +251,9 @@ function carregaUserEscolaColeta(userId){
       data:{
         userId                                      
       }, 
-      success: function(retorno_php){        
+      success: function(retorno_php){
+        console.log(retorno_php);   
+        return;
         document.getElementById('tabelaEscolasUsuario').innerHTML = retorno_php;
       }
     });//Fecha o ajax 

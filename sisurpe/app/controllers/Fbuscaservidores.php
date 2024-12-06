@@ -6,10 +6,6 @@
 				flash('message', 'Você deve efetuar o login para ter acesso a esta página', 'error'); 
 				redirect('pages/index');
 				die();
-			} else if ((!isAdmin()) && (!isSec())){                
-				flash('message', 'Você não tem permissão de acesso a esta página', 'error'); 
-				redirect('pages/index'); 
-				die();
 			} 
 			$this->userModel = $this->model('User');            
 			$this->escolaModel = $this->model('Escola');

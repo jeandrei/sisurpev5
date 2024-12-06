@@ -13,7 +13,7 @@
               <img class="img-fluid" src="<?php echo URLROOT; ?>/imagens/brasao.png" alt="">
             </div>
             <div class="col-12 col-lg-9">
-              <h1 class="display-5"><?php echo $data['title'];?></h1>
+              <h1 class="display-5"><?php echo $data['titulo'];?></h1>
               <p><?php echo $data['description'];?></p>
             </div>
           </div>  

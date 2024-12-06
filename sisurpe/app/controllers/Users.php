@@ -183,14 +183,16 @@
 					'email' => getData($user->email),
 					'cpf' => getData($user->cpf),					
 					'escolas' => $this->escolaModel->getEscolas(),
+          'usertype' => $user->type,
 					'password' => '',
 					'confirm_password' => '',
 					'name_err' => '',
 					'password_err' => '',
 					'confirm_password_err' => '',
-					'escolaId_err' => ''
-				];
-				// Load view
+					'escolaId_err' => '',
+          'coleta' => $this->grupoModel->getPermicao('ler',$user_id,'coleta')
+				];        
+				// Load view       
 				$this->view('users/edit', $data);
 			}
 		}
@@ -273,7 +275,7 @@
           'criar' => $permicao->criar,
           'apagar' => $permicao->apagar
         ]; 
-      }
+      }      
 
       $_SESSION[SE.'_user_permit'] = $permitArr;
 			$_SESSION[SE.'_user_id'] = $user->id;
@@ -472,7 +474,12 @@
 			}
 		}
 
-    public function grupos($userId){      
+    public function grupos($userId){  
+      if($this->userModel->getUserById($userId)->type === 'externo'){        
+        flash('message', 'Usuário externo. Apenas usuário interno pode ser adicionado a grupos!','error');
+        redirect('adminusers');
+        die();
+      }
       $gruposCadastrados = $this->grupoModel->getGrupos();      
       if($userGrupos = $this->grupoModel->gruposDoUsuario($userId)){
         foreach($userGrupos as $row){

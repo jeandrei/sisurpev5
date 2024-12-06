@@ -1,76 +1,73 @@
 <?php require APPROOT . '/views/inc/header.php'; ?>
 
-<?php flash('mensagem');?>
-
-<?php //debug($data);?>
- 
+<?php flash('mensagem');?> 
 
 <div class="container">
-    <!-- nome do servidor --> 
-    <div class="row">
-        <div class="col-md-12 mb-3 mt-3 p-3 bg-secondary text-white">
-            <h4>Servidor: <?php echo $data['user']->name;?></h4>                
-        </div>
+  <!-- nome do servidor --> 
+  <div class="row">
+    <div class="col-md-12 mb-3 mt-3 p-3 bg-secondary text-white">
+      <h4>Servidor: <?php echo $data['user']->name;?></h4>                
     </div>
-    <!-- nome do servidor --> 
+  </div>
+  <!-- nome do servidor --> 
 
-    <!-- linha escolas -->
-    <?php if($data['escolas']) : ?>
-      <?php $count = 0;?>
-      <div class="row">
-        <div class="col-md-12">
-          <fieldset class="form-group border p-3">
-            <legend class="w-auto px-2">Escolas do servidor</legend>
-            <table class="table table-striped">
-              <thead>
-                <tr>
-                  <th scope="col">#</th>
-                  <th scope="col">Escola</th>                  
-                </tr>
-              </thead>
-              <tbody>
-                <?php foreach($data['escolas'] as $row) : ?>
-                  <tr>
-                    <?php $count++;?>
-                    <th scope="row"><?php echo $count;?></th>
-                    <td><?php echo $row->escolaNome;?></td>                    
-                  </tr>
-                <?php endforeach;?>
-              </tbody>
-            </table>          
-          </fieldset>
-        </div>
-      </div>
-    <?php else: ?>
-      <fieldset class="form-group border p-3">
+  <!-- linha escolas -->
+  <?php if($data['escolas']) : ?>
+    <?php $count = 0;?>
+    <div class="row">
+      <div class="col-md-12">
+        <fieldset class="form-group border p-3">
           <legend class="w-auto px-2">Escolas do servidor</legend>
-          <p>Servidor sem escolas informadas</p>
-      </fieldset>
-    <?php endif;?>
-    <!-- linha escolas -->
-
-    <!-- linha formação -->
-    <?php if($data['forarmacao']) : ?>      
-      <div class="row">
-        <div class="col-md-12">
-          <fieldset class="form-group border p-3">
-            <legend class="w-auto px-2">Formação</legend>
-            <p>Maior escolaridade:
-              <b><?php echo getMaiorEscolaridade($data['forarmacao']->maiorEscolaridade);?></b>
-            </p>
-            <p>Tipo de ensino médio cursado:
-            <b><?php echo getTipoEnsinoMedio($data['forarmacao']->tipoEnsinoMedio);?></b>
-            </p>
-          </fieldset>
-        </div>
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Escola</th>                  
+              </tr>
+            </thead>
+            <tbody>
+              <?php foreach($data['escolas'] as $row) : ?>
+                <tr>
+                  <?php $count++;?>
+                  <th scope="row"><?php echo $count;?></th>
+                  <td><?php echo $row->escolaNome;?></td>                    
+                </tr>
+              <?php endforeach;?>
+            </tbody>
+          </table>          
+        </fieldset>
       </div>
-    <?php else: ?>
-      <fieldset class="form-group border p-3">
+    </div>
+  <?php else: ?>
+    <fieldset class="form-group border p-3">
+      <legend class="w-auto px-2">Escolas do servidor</legend>
+      <p>Servidor sem escolas informadas</p>
+    </fieldset>
+  <?php endif;?>
+  <!-- linha escolas -->
+
+  <!-- linha formação -->
+  <?php if($data['forarmacao']) : ?>      
+    <div class="row">
+      <div class="col-md-12">
+        <fieldset class="form-group border p-3">
           <legend class="w-auto px-2">Formação</legend>
-          <p>Servidor sem formação informada</p>
-      </fieldset>
-    <?php endif;?>
-    <!-- linha formação -->
+          <p>Maior escolaridade:
+            <b><?php echo getMaiorEscolaridade($data['forarmacao']->maiorEscolaridade);?></b>
+          </p>
+          <p>Tipo de ensino médio cursado:
+          <b><?php echo getTipoEnsinoMedio($data['forarmacao']->tipoEnsinoMedio);?></b>
+          </p>
+        </fieldset>
+      </div>
+    </div>
+  <?php else: ?>
+    <fieldset class="form-group border p-3">
+        <legend class="w-auto px-2">Formação</legend>
+        <p>Servidor sem formação informada</p>
+    </fieldset>
+  <?php endif;?>
+  <!-- linha formação -->
 
 
     <!-- linha curso superior -->
@@ -121,15 +118,11 @@
       </div>
     <?php else: ?>
       <fieldset class="form-group border p-3">
-          <legend class="w-auto px-2">Cursos Superiores</legend>
-          <p>Servidor sem curso superior informado</p>
+        <legend class="w-auto px-2">Cursos Superiores</legend>
+        <p>Servidor sem curso superior informado</p>
       </fieldset>
     <?php endif;?>
     <!-- linha curso superior -->
-
-
-
-
 
     <!-- linha formação/complementação pedagógica -->
     <?php if($data['fcomplementacoes']) : ?>
@@ -165,8 +158,6 @@
       </fieldset>
     <?php endif;?>
     <!-- linha formação/complementação pedagógica -->
-
-
 
     <!-- linha especialização -->
     <?php if($data['fpos']) : ?>
@@ -241,7 +232,6 @@
     <?php endif;?>
     <!-- linha especialização cursos-->
 
-
     <!-- linha outros cursos 80 horas -->
     <?php if($data['foutroscur']) : ?>
       <?php $count = 0;?>
@@ -275,8 +265,6 @@
           <p>Servidor sem outros cursos informados</p>
       </fieldset>
     <?php endif;?>
-     <!-- linha outros cursos 80 horas -->
-       
+     <!-- linha outros cursos 80 horas -->       
 </div>  
-
 <?php require APPROOT . '/views/inc/footer.php'; ?>
