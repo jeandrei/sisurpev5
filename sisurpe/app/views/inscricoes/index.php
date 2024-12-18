@@ -65,8 +65,10 @@
         <?endif;?>
         <!-- FIM SE FOR UM USUÁRIO ADMIN OU SEC ADICIONO O BOTÃO EDITAR -->
         <p class="card-title <?php echo(retornaClasseFase($registro['fase']));?>">Fase: <?php echo($registro['fase']);?></p>
+        <!-- ID -->
+        <p class="card-title"><b>ID: </b><?php echo ($registro['id']);?></p>
         <!-- CURSO -->
-        <p class="card-title"><b>Curso: </b><?php echo ($registro['nome_curso']);?></p>
+        <p class="card-text"><b>Curso: </b><?php echo ($registro['nome_curso']);?></p>
         <!-- DESCRIÇÃO -->
         <p class="card-text"><b>Descrição: </b><?php echo($registro['descricao']);?></p>
         <!-- PERIODO -->

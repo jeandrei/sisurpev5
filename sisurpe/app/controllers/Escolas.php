@@ -1,21 +1,30 @@
 <?php
 	class Escolas extends Controller{
 		
-		public function __construct(){
-			if((!isLoggedIn())){ 
-				flash('message', 'Você deve efetuar o login para ter acesso a esta página', 'error'); 
-				redirect('users/login');
-				die();
-			} else if ((!isAdmin())){                
-				flash('message', 'Você não tem permissão de acesso a esta página', 'error'); 
-				redirect('pages/sistem'); 
-				die();
-			}  
-				$this->escolaModel = $this->model('Escola');
-				$this->bairroModel = $this->model('Bairro');
+		public function __construct(){			 
+      $this->escolaModel = $this->model('Escola');
+      $this->bairroModel = $this->model('Bairro');
+      $this->grupoModel = $this->model('Grupo');
 		}
 
-		public function index() {  			
+    //Valida o id para excluir ou editar
+    public function validaId($id){      
+			if(!is_numeric($id)){
+				flash('message', 'ID inválido.', 'error'); 
+        redirect('escolas/index');
+        die();			
+			} else if(!$data = $this->escolaModel->getEscolaById($id)) {
+        flash('message', 'Escola inexistente.', 'error'); 
+        redirect('escolas/index');
+        die();	
+      }
+      return $data;
+    }    
+
+		public function index() {
+      
+      $this->getPermicao('ler',$_SESSION[SE.'_user_id']);
+
 			if($escolas = $this->escolaModel->getEscolas()){													
 				foreach($escolas as $row){                    
 					$escolasArray[] = [
@@ -35,7 +44,8 @@
 					];       
 				}  
 				$data = [
-					'escolas' => $escolasArray
+					'escolas' => $escolasArray,
+          'titulo' => 'Escolas'
 				];            
 				$this->view('escolas/index', $data);
 			} else {                                 
@@ -44,7 +54,10 @@
 		}
 
 		public function new(){
-			if($_SERVER['REQUEST_METHOD'] == 'POST'){
+      
+      $this->getPermicao('criar',$_SESSION[SE.'_user_id']);
+			
+      if($_SERVER['REQUEST_METHOD'] == 'POST'){
 				$_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING); 
 				$data = [
 					'nome' => strtoupper(post('nome')),
@@ -60,26 +73,27 @@
 					'bairro_id_err' => '',
 					'logradouro_err' => '',                   
 					'emAtividade_err' => '',
-					'numero_err' => ''
+					'numero_err' => '',
+          'titulo' => 'Adicionar escola'
 				];		
 				// Valida nome
 				if(empty($data['nome'])){
-					$data['nome_err'] = 'Por favor informe o nome da escola';
+					$data['nome_err'] = 'Por favor informe o nome da escola php';
 				} 
 
 				// Valida logradouro
 				if(empty($data['logradouro'])){
-					$data['logradouro_err'] = 'Por favor informe o logradouro';
+					$data['logradouro_err'] = 'Por favor informe o logradouro.';
 				} 
 
 				// Valida bairro
 				if((empty($data['bairro_id'])) || ($data['bairro_id'] == 'null')){                    
-					$data['bairro_id_err'] = 'Por favor informe o bairro';
+					$data['bairro_id_err'] = 'Por favor informe o bairro.';
 				} 				
 
 				// Valida emAtividade
 				if((($data['emAtividade'])=="") || ($data['emAtividade'] <> '0') && ($data['emAtividade'] <> '1')){
-					$data['emAtividade_err'] = 'Por favor informe se deseja manter a escola disponível para inscrições';
+					$data['emAtividade_err'] = 'Por favor informe se deseja manter a escola ativa.';
 				} 
 			
 				if(                    
@@ -119,21 +133,18 @@
 					'bairro_id_err' => '',
 					'logradouro_err' => '',                   
 					'emAtividade_err' => '',
-					'numero_err' => ''                    
+					'numero_err' => '',
+          'titulo' => 'Adicionar escola'
 				];					
 				$this->view('escolas/new', $data);
 			} 
 		}
 
-		public function edit($id){ 
+    public function edit($id){ 
 
-			if(!is_numeric($id)){
-				$erro = 'ID Inválido!'; 
-			} else if (!$escola = $this->escolaModel->getEscolaByid($id)){
-				$erro = 'ID inexistente';
-			} else {
-				$erro = '';
-			}  
+      $this->getPermicao('editar',$_SESSION[SE.'_user_id']);
+
+      $escola = $this->validaId($id);			
 
 			if($_SERVER['REQUEST_METHOD'] == 'POST'){		
 				$data = [
@@ -151,17 +162,18 @@
 					'bairro_id_err' => '',
 					'logradouro_err' => '',                   
 					'emAtividade_err' => '',
-					'numero_err' => ''
+					'numero_err' => '',
+          'titulo' => 'Editar escola'
 				];		
 					
 				// Valida nome
 				if(empty($data['nome'])){
-					$data['nome_err'] = 'Por favor informe o nome da escola';
+					$data['nome_err'] = 'Por favor informe o nome da escola.';
 				} 
 
 				// Valida logradouro
 				if(empty($data['logradouro'])){
-					$data['logradouro_err'] = 'Por favor informe o logradouro';
+					$data['logradouro_err'] = 'Por favor informe o logradouro.';
 				} 
 
 				// Valida bairro
@@ -171,7 +183,7 @@
 
 				// Valida emAtividade
 				if((($data['emAtividade'])=="") || ($data['emAtividade'] <> '0') && ($data['emAtividade'] <> '1')){
-					$data['emAtividade_err'] = 'Por favor informe se deseja manter a escola disponível para inscrições';
+					$data['emAtividade_err'] = 'Por favor informe se deseja manter a escola ativa.';
 				}  				
 					
 				if(                    
@@ -206,18 +218,19 @@
 					'bairro_id_err' => '',
 					'logradouro_err' => '',                   
 					'emAtividade_err' => '',
-					'numero_err' => ''                    
+					'numero_err' => '',
+          'titulo' => 'Editar escola'                   
 				]; 
 				$this->view('escolas/edit', $data);
 			} 
-		}   
-		public function delete($id){ 	
-			//VALIDAÇÃO DO ID
-			if(!is_numeric($id)){
-					$erro = 'ID Inválido!'; 
-			} else if (!$escolaDelete = $this->escolaModel->getEscolaById($id)){
-					$erro = 'ID inexistente';
-			}	
+		}
+
+		public function delete($id){ 
+      
+      $this->getPermicao('apagar',$_SESSION[SE.'_user_id']);
+
+      $escolaDelete = $this->validaId($id);	
+
 			if($escolas = $this->escolaModel->getEscolas()){													
 				foreach($escolas as $row){                    
 					$escolas = [
@@ -227,7 +240,7 @@
 						'bairro' => $this->bairroModel->getBairroById($row->bairro_id)->bairro,
 						'logradouro' => getData($row->logradouro),                    
 						'numero' => ($row->numero) ? $row->numero : '',
-						'emAtividade' => ($row->emAtividade == 1) ? 'Sim' : 'Não'
+						'emAtividade' => ($row->emAtividade == 1) ? 'Sim' : 'Não'            
 					];       
 				}  
 			}			
@@ -254,7 +267,8 @@
 			} else {	
 				$data = [
 					'escolas' => $escolas,
-					'escola' => $escolaDelete
+					'escola' => $escolaDelete,
+          'titulo' => 'Excluir escola'
 				];
 				$this->view('escolas/confirma',$data);
 				die();
@@ -281,6 +295,20 @@
 				);                     
 				echo json_encode($json_ret); 
 			}
-		}        
+		} 
+    
+    // Função que valida se o usuário pode ou não apagar um grupo
+    public function getPermicao($acao,$userId){      
+      if(!$this->grupoModel->getPermicao($acao,$userId,'escola')){
+        flash('message', 'Você não tem permissão para '. $acao.' na tabela grupo.', 'error'); 
+        if($acao === 'ler'){
+          redirect('index');
+        } else {
+          redirect('pages/index');
+        }        
+        die();
+      }    	  		
+    }
+
 	}   
 ?>

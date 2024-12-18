@@ -79,7 +79,7 @@
 		}
    
 		public function getUserEscolaColeta(){      
-			$userId = $_POST['userId'];
+			$userId = $_POST['userId'];      
 			$html = "
 				<thead class='thead-dark'>
 					<tr class='text-center'>

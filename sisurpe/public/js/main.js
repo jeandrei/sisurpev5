@@ -38,6 +38,10 @@ jQuery.validator.addMethod(
   'Informe um CPF válido'
 )
 
+$.validator.addMethod("selectone", function(value, element, arg){
+  return arg !== value;
+}, "Value must not equal arg.");
+
 //** ***************************************FIM VALIDAÇÕES ******************************************************************** */
 
 function confirmasenha(senha, confirma) {

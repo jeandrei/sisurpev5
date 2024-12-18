@@ -1,8 +1,7 @@
 <?php require APPROOT . '/views/inc/header.php'; ?>
-
-<div class="row align-items-center mb-3"> 
+ <div class="row align-items-center mb-3"> 
     <div class="col-md-10">
-       
+        <h1>Escolas</h1>
     </div>
     <div class="col-md-2">
         <a href="<?php echo URLROOT; ?>/escolas/new" class="btn btn-primary pull-right">
@@ -10,9 +9,7 @@
         </a>
     </div>
  </div> 
-
-<?php flash('message');?>
-
+ <?php flash('message');?>
 <table class="table table-striped">
     <thead>
         <tr class="text-center">      

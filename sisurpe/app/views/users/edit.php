@@ -233,11 +233,27 @@
 <script>
 $( document ).ready(function() {  
   let tipo = document.getElementById('usertype').value; 
-  let coleta = <?php echo $data['coleta'];?>;  
+  let coleta = <?php echo $data['coleta'];?>;   
   if(tipo == 'interno' && coleta == true){        
     document.querySelector('.escolaUsuario').style.display = 'block';
     carregaUserEscolaColeta(<?php echo $data['user_id'];?>);
   }
+
+
+  $('#addEscola').click(function() {
+    let escolaId = $('#escolaId').val();        
+    let error = null;        
+    if(escolaId == 'null'){
+      error = 'Informe a Escola';  
+    }
+    if(error == null){
+      gravaUserEscolaColeta(escolaId); 
+    } else {
+      createNotification(error, 'error');
+    }        
+  });//Fecha o gravarTipo click
+
+  
 });
 
 function carregaUserEscolaColeta(userId){  
@@ -253,5 +269,35 @@ function carregaUserEscolaColeta(userId){
       }
     });//Fecha o ajax 
   }    
+}
+
+function gravaUserEscolaColeta(escolaId){
+showLoading('#addEscola');
+$.ajax({  
+  url: `<?php echo URLROOT; ?>/Userescolacoletas/add`,                
+  method:'POST',                 
+  data:{
+    userId:<?php echo ($data['user_id']) ? $data['user_id'] : 'NULL' ;?>,                   
+    escolaId:escolaId                                        
+  },         
+  success: function(retorno_php){ 
+    var responseObj = JSON.parse(retorno_php);             
+    createNotification(responseObj['message'], responseObj['class']);
+    carregaUserEscolaColeta(<?php echo $data['user_id'];?>);
+    noLoading('#addEscola','+ Escola');
+  }
+});//Fecha o ajax
+}
+
+function showLoading(id){        
+  btn = document.querySelector(id);                
+  btn.querySelector('.spinner-border').style.display = 'inline-block';
+  btn.lastElementChild.innerText = 'Aguarde...';
+}
+
+function noLoading(id,text){
+  btn = document.querySelector(id);                
+  btn.querySelector('.spinner-border').style.display = 'none';
+  btn.lastElementChild.innerText = text;   
 }
 </script>

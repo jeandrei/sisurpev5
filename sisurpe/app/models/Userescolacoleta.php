@@ -42,7 +42,7 @@
 		}
 
 		//Retorna as escolas vinculadas ao usuário coleta
-		public function getEscolaColetaUserById($userId){
+		public function getEscolaColetaUserById($userId){     
 			$this->db->query("
 				SELECT 
 						uec.id as uecId, 
@@ -84,7 +84,7 @@
 					UPDATE 
 						users 
 					SET 
-						type = 'coleta'              
+						type = 'interno'              
 					WHERE 
 						id = :id                      
 			");
