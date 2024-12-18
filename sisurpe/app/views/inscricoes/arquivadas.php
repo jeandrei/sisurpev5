@@ -1,13 +1,6 @@
 <?php require APPROOT . '/views/inc/header.php'; ?>
 
-  <?php flash('message');?>
-
-  <hr>
-  <div class="p-3 text-center">
-    <h2><?php echo $data['title'];?></h2>
-  </div>
-
-  <hr>  
+  <?php flash('message');?>  
 
   <!-- paginação -->
   <?php
@@ -45,7 +38,7 @@
       <?php foreach ($data["results"] as $registro): ?>
         <div class="row bg-light border-bottom border-warning">
           <div class="col-10">        
-            <?php echo $registro['nome_curso'] . ' de ' . $registro['data_inicio'] .' até ' .$registro['data_termino'];?> 
+            <?php echo 'ID: ' . $registro['id'] . ' - ' . $registro['nome_curso'] . ' de ' . formatadata($registro['data_inicio']) .' até ' . formatadata($registro['data_termino']);?> 
           </div>
           <div class="col-2">
             <a class="text-success" href="<?php echo URLROOT; ?>/inscricoes/reabrir/<?php echo $registro['id'];?>" role="button">Reabrir</a>
