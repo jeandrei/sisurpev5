@@ -26,7 +26,8 @@
 				SELECT 
 					escola.id as escolaId, 
 					escola.nome as escolaNome, 
-					f_user_escola.escolaId as fuEscolaId 
+					f_user_escola.escolaId as fuEscolaId,
+          f_user_escola.ano as ano  
 				FROM 
 					escola, 
 					f_user_escola 
@@ -34,6 +35,9 @@
 					escola.id = f_user_escola.escolaId 
 				AND 
 					f_user_escola.userId = :userId
+        AND ano = YEAR(CURDATE())
+        ORDER BY
+          ano DESC
 			");
 			$this->db->bind(':userId',$user_id);
 			$result = $this->db->resultSet();			

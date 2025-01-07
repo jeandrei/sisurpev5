@@ -28,7 +28,7 @@ define('URLROOT', 'http://' . $_SERVER["SERVER_NAME"] . '/sisurpe');
 define('SITENAME', 'SISURPE');
 
 //App Version
-define('APPVERSION', '1.0.0');
+define('APPVERSION', '1.0.1');
 
 //CONSTANTE DE SESSAO PARA EVITAR QUE SISTEMAS DIFERENTES FIQUEM LOGADOS COM A MESMA SESSÃO
 define('SE','sisurpe');

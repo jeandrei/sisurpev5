@@ -74,6 +74,7 @@
   <thead>
     <tr>
       <th scope="col">#</th>
+      <th scope="col">Ano</th> 
       <th scope="col">Escola</th> 
       <th scope="col"></th>     
     </tr>
@@ -85,6 +86,7 @@
         <?php $i++;?>
         <tr>
           <th scope="row"><?php echo $i;?></th>
+          <td><?php echo $row->ano;?></td> 
           <td><?php echo $row->escolaNome;?></td> 
           <td><a href="<?php echo URLROOT.'/fuserescolaanos/delete/'.$row->fuEscolaId;?>"><i class="fa-solid fa-trash" style="color: #f20707;"></i></a></td>     
         </tr>
@@ -92,7 +94,7 @@
     <?php else: ?>
       <tr class='text-center'>
           <td colspan='3'>
-              Nenhuma escola adicionada!
+              Nenhuma escola adicionada no ano de <?php echo date("Y"); ?>!
           </td> 
       </tr>   
     <?php endif;?>

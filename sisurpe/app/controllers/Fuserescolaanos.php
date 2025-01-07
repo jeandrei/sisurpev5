@@ -37,6 +37,7 @@
           'userEscolas' => $this->fuserescolaModel->getEscolasUser($_SESSION[SE . '_user_id']),
           'avancarLink' => URLROOT . '/fuserformacoes/index',
           'escolaId' => post('escolaId'),
+          'escolaId_err' => '',
           'userId' => $this->userModel->getUserById($_SESSION[SE . '_user_id'])->id
         ];
 

@@ -1,12 +1,7 @@
 <?php require APPROOT . '/views/inc/header.php'; ?>
   
   <?php flash('mensagem');?>
-
-  <hr>
-    <div class="p-3 text-center">
-      <h2><?php echo $data['title'];?></h2>
-    </div>
-  <hr>    
+  
   <?php if($data['certificados'] != 'null') : ?>
     <?php foreach($data['certificados'] as $certificado) : ?>
       <div class="row border-bottom">

@@ -63,7 +63,7 @@ $countgeral=0;
 $pdf->AddPage('L');
 //SETA A FONTE PARA TAMANHO 8 NEGRITO
 $pdf->SetFont('Arial','B',12);
-$pdf->Cell(0, 5,utf8_decode($data['curso']->nome_curso), 0, 1, "C");
+$pdf->Cell(0, 5,utf8_decode($data['curso']->nome_curso . ' - ID:' . $data['curso']->id), 0, 1, "C");
 $countescola=1;                       
 $pdf->Ln();
 $i=0;

@@ -23,8 +23,7 @@
                 type="text" 
                 name="carga_horaria"
                 id="carga_horaria"
-                value="<?php echo ($data['presenca_em_andamento'])?$data['presenca_em_andamento']->carga_horaria:'';?>"                       
-                placeholder="Carga Horária"
+                value="<?php echo ($data['presenca_em_andamento'])?$data['presenca_em_andamento']->carga_horaria:'';?>"                                       
                 <?php echo (($data['presenca_em_andamento'])) ? 'readonly' : ''; ?>
             >
             <div class="invalid-feedback">
@@ -41,7 +40,7 @@
               <a class="btn btn-success" href="<?php echo URLROOT; ?>/presencas/index/<?php echo $data['presenca_em_andamento']->id;?>" role="button">Iniciar Presença</a>
 
             <?php else: ?>
-              <button type="submit" class="btn btn-primary">Abrir Presença</button> 
+              <button type="submit" class="btn btn-primary mt-2">Abrir Presença</button> 
             <?php endif; ?>
       </form>
     </div><!--col-md-12-->
