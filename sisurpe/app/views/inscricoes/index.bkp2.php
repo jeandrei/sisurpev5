@@ -26,21 +26,21 @@
       die($data['error']);
     } 
   ?> 
-
   <?php foreach ($data['inscricoes'] as $registro): ?>
     <!-- INÍCIO DE CADA CARD -->
     <div class="card mb-3">
-      <!-- CARD BODY -->
+      <!-- card-body -->
       <div class="card-body">
-        <!-- row dos comandos -->
+        <!-- SE FOR UM USUÁRIO ADMIN OU SEC ADICIONO O BOTÃO EDITAR -->
         <?php if(getPermission('inscricoes','editar')) : ?>
+          <!-- row dos comandos -->
           <div class="row">
             <div class="col-12">
               <div class="d-flex p-3 bg-dark text-white">
                 <a href="<?php echo URLROOT; ?>/inscricoes/edit/<?php echo $registro['id']?>" class="btn btn-primary btn-sm m-2">
                   <i class="fa fa-pencil"></i> 
                   Editar
-                </a>
+                </a>                  
                 <?php if($registro['fase'] == 'FECHADO') : ?>
                   <a href="<?php echo URLROOT; ?>/abrepresencas/index/<?php echo $registro['id']?>" class="btn btn-secondary btn-sm m-2">
                     <i class="fa fa-check"></i> 
@@ -58,12 +58,13 @@
                   <i class="fa fa-play"></i> 
                   Presença em andamento
                   </a>                  
-                <?endif;?>   
+                <?endif;?>
               </div>
             </div>
           </div>
+          <!-- row dos comandos -->
         <?endif;?>
-        <!-- fim row dos comandos -->
+        <!-- FIM SE FOR UM USUÁRIO ADMIN OU SEC ADICIONO O BOTÃO EDITAR -->           
         <p class="card-title <?php echo(retornaClasseFase($registro['fase']));?>">Fase: <?php echo($registro['fase']);?></p>
         <!-- ID -->
         <p class="card-text"><b>ID: </b><?php echo ($registro['id']);?></p>
@@ -95,6 +96,7 @@
         </p>
         <!-- CARGA HORÁRIA -->     
         <p class="card-text"><b>Carga Horária: </b><?php echo($registro['cargaHoraria']) ? $registro['cargaHoraria'] . ' Horas' : 'Sem carga horária.';?></p>
+        <!-- FIM CARGA HORÁRIA -->  
         <!-- SE FASE ABERTO HABILITAMOS O BOTÃO INSCREVER-SE -->
         <?php if($registro['fase'] == 'ABERTO') : ?>
           <?php if(!$registro['usuarioInscrito']) : ?>
@@ -104,7 +106,7 @@
           <?php endif; ?>  
         <?php endif; ?> 
         <!-- FIM SE FASE ABERTO HABILITAMOS O BOTÃO INSCREVER-SE -->
-         <!-- SE A FASE FOR CERTIFICADO -->
+        <!-- SE A FASE FOR CERTIFICADO -->
         <?php if($registro['fase'] == 'CERTIFICADO') : ?>  
           <!-- SE O USUÁRIO ESTIVER INSCRITO NO CURSO IMPRIMIMOS O BOTÃO CERTIFICADO -->
           <?php if($registro['usuarioInscrito']) : ?>
@@ -138,13 +140,15 @@
               Lista para o livro de registro
             </a>
           <?endif;?> 
-        <?php endif; ?>        
+        <?php endif; ?>
+
+        
         </p>
-        <!-- FIM BOTÕES PARA IMPRIMIR AS LISTAS --> 
+        <!-- FIM BOTÕES PARA IMPRIMIR AS LISTAS -->  
       </div>
-      <!-- CARD BODY -->
+      <!-- card-body -->
     </div>
-    <!-- FIM DE CADA CARD -->
+    <!-- INÍCIO DE CADA CARD -->
   <?php endforeach; ?>              
  
 <?php require APPROOT . '/views/inc/footer.php'; ?>

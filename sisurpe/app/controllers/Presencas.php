@@ -5,20 +5,36 @@
         flash('message', 'Você deve efetuar o login para ter acesso a esta página', 'error'); 
         redirect('pages/index');
         die();
-      } else if ((!isAdmin()) && (!isSec())){                
-        flash('message', 'Você não tem permissão de acesso a esta página', 'error'); 
-        redirect('pages/index'); 
-        die();
-      }              
-      $this->abrePresencaModel = $this->model('Abrepresenca');    
+      }         
+      $this->abrePresencaModel = $this->model('Abrepresenca');
+      $this->grupoModel = $this->model('Grupo');
       $this->inscricaoModel = $this->model('Inscricoe');
       $this->inscritoModel = $this->model('Inscrito');
       $this->temaModel = $this->model('Tema');
       $this->userModel = $this->model('User');    
       $this->presencaModel = $this->model('Presenca');  
     }
+
+    //Valida o id para excluir ou editar
+    public function validaId($id){      
+			if(!is_numeric($id)){
+				flash('message', 'ID inválido.', 'error'); 
+        redirect('inscricoes/index');
+        die();			
+			} else if(!$data = $this->abrePresencaModel->getAbrePresencasById($id)) {
+        flash('message', 'Abre Presença inexistente.', 'error'); 
+        redirect('inscricoes/index');
+        die();	
+      }
+      return $data;
+    }    
       
-    public function index($abre_presenca_id){      
+    public function index($abre_presenca_id){          
+
+      $this->getPermicao('editar',$_SESSION[SE.'_user_id']);
+
+      $abrePresenca = $this->validaId($abre_presenca_id);
+
       $inscricoes_id = $this->abrePresencaModel->getInscricaoId($abre_presenca_id)->inscricoes_id; 
       $data = [
         'abre_presenca_id' => $abre_presenca_id, 
@@ -33,7 +49,53 @@
       $this->view('presencas/index', $data);
     }  
 
-    public function qr(){
+    public function qr(){      
+      if((!isLoggedIn())){ 
+        $json_ret = array
+        (
+          'class'=>'error', 
+          'message'=>'Sua sessão expirou, você deve fazer o login primeiro!',
+          'error'=>$data
+        );                     
+        echo json_encode($json_ret); 
+        die();
+      }    
+
+      $data = [
+        'abre_presenca_id' => get('presenca_em_andamento'),
+        'user_id' => get('userId')
+      ];           
+      
+      try {        
+        if($this->presencaModel->jaRegistrado($data)){
+          throw new Exception('Ops! Você já tem presença neste curso!');
+        } else {
+          if($this->presencaModel->register($data)){          
+            $json_ret = array(                                            
+              'class'=>'success', 
+              'message'=>'Presença registrada com sucesso!!',
+              'error'=>false
+            );    
+            echo json_encode($json_ret); 
+            die();
+          } else {                                
+            throw new Exception('Ops! Algo deu errado ao tentar registrar a presença! Tente novamente.');
+          } 
+        }  
+      } catch (Exception $e) {
+        $erro = 'Erro: '.  $e->getMessage();                                  
+        $json_ret = array
+        (
+          'class'=>'error', 
+          'message'=>$erro,
+          'error'=>true
+        );                     
+        echo json_encode($json_ret);               
+      }   
+    }
+
+
+    public function qrBkp(){      
       if((!isLoggedIn())){ 
         flash('message', 'Você deve efetuar o login para ter acesso a esta página', 'error'); 
         redirect('pages/index');
@@ -43,6 +105,7 @@
         'abre_presenca_id' => get('presenca_em_andamento'),
         'user_id' => get('userId')
       ]; 
+     
       
       try {
         if($this->presencaModel->jaRegistrado($data)){
@@ -259,6 +322,19 @@
 
       //var_dump($data['usersIds']);
       //var_dump($data['abre_presenca_id']);
+    }
+
+    // Função que valida se o usuário pode ou não apagar um grupo
+    public function getPermicao($acao,$userId){      
+      if(!$this->grupoModel->getPermicao($acao,$userId,'abre_presenca')){
+        flash('message', 'Você não tem permissão para '. $acao.' na tabela abre presença.', 'error'); 
+        if($acao === 'ler'){
+          redirect('index');
+        } else {
+          redirect('inscricoes/index');
+        }        
+        die();
+      }    	  		
     }
 
 

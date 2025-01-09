@@ -21,6 +21,8 @@
     <!--jquery-->
     <script src="<?php echo URLROOT; ?>/js/jquery-3.1.1.js"></script> 
 
+    <script src="<?php echo URLROOT; ?>/js/html5-qrcode.min.js"></script>
+
     <!--jquery validation-->
     <script src="<?php echo URLROOT; ?>/js/jquery.validate.js"></script> 
 

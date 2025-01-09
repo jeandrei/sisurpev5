@@ -339,19 +339,19 @@
   function retornaClasseFase($fase){
     switch ($fase){
       case 'ABERTO': 
-        return "badge badge-success";
+        return "badge bg-success";
         break;
       case 'FECHADO':      
-        return "badge badge-danger";
+        return "badge bg-danger";
         break;
       case 'CANCELADO';     
-        return "badge badge-warning";
+        return "badge bg-warning text-dark";
         break;
         case 'CERTIFICADO';      
-        return "badge badge-primary";
+        return "badge bg-primary";
         break;
       case 'ARQUIVADO';      
-        return "badge badge-secondary";
+        return "badge bg-secondary";
         break;
     }
   }

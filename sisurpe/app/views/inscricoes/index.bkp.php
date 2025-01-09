@@ -69,7 +69,7 @@
           </div>
           <!-- row dos comandos -->
         <?endif;?>
-        <!-- FIM SE FOR UM USUÁRIO ADMIN OU SEC ADICIONO O BOTÃO EDITAR -->
+        <!-- FIM SE FOR UM USUÁRIO ADMIN OU SEC ADICIONO O BOTÃO EDITAR -->   
         <p class="card-title <?php echo(retornaClasseFase($registro->fase));?>">Fase: <?php echo($registro->fase);?></p>
         <!-- CURSO -->
         <p class="card-title"><b>Curso: </b><?php echo ($registro->nome_curso);?></p>

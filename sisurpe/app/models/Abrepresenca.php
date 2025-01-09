@@ -136,5 +136,19 @@
 				return false;
 			}   
 		}
+
+    public function getAbrePresencasById($abrePresenca_id){
+			$this->db->query("
+				SELECT * FROM abre_presenca WHERE id = :id
+			");
+			$this->db->bind(':id',$abrePresenca_id); 
+			$result = $this->db->resultSet();  
+			if($this->db->rowCount() > 0){
+				return $result;
+			} else {
+				return false;
+			}   
+		}
+
 	}
 ?>

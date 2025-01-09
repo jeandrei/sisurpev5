@@ -114,10 +114,11 @@ async function Search(e){ document.getElementById("cpf_err").innerText = '';
 // 3 Gravo a presença no bd
 function gravar(id){
   // pego o cpf
-  let cpfInput = document.getElementById("cpf").value;     
+  let cpfInput = document.getElementById("cpf").value;   
+   
   // pego o id do usuário pelo cpf
-  let user = getUserId(`${cpfInput}`);     
-  
+  let user = getUserId(`${cpfInput}`); 
+    
   //se recuperar o nome do usuário eu transformo em uppercase e coloco no id nome
   if(user.name){
     document.getElementById('nome').innerText = user.name.toUpperCase();
@@ -191,7 +192,7 @@ function estaInscrito(user_id,inscricoes_id){
 
 
 // retonra o id e o nome do usuário passando o cpf
-function getUserId(cpf){
+function getUserId(cpf){  
     $.ajax({
       url: `<?php echo URLROOT; ?>/users/getUsersCpf/${cpf}`,
       method:'POST',

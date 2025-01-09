@@ -26,7 +26,15 @@
 					'description'=> 'Sistema Unificado de Registros de Penha - SISURPE'
 				];
 				$this->view('pages/about', $data);           
-			}							
+			}		
+      
+      public function leitorqr(){
+				$data = [
+					'titulo' => 'Leitor de QR Code',
+					'description'=> 'Para marcar sua presença, aponte para o código QR.'
+				];
+				$this->view('pages/leitorqr', $data);           
+			}	
 
 			public function modelo_pagina(){
 				$data = [
