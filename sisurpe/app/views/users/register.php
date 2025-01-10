@@ -101,13 +101,16 @@
                         <span class="invalid-feedback">
                             <?php echo $data['confirm_password_err']; ?>
                         </span>
-                    </div>                     
+                    </div>            
+                    
                   
                     <!--BUTTONS-->
                     <div class="form-row">
-                        <div class="col">
-                            <input type="submit" class="btn btn-success btn-block" value="Registre-se">
+                       
+                        <div class="d-grid gap-2">                      
+                          <input type="submit" value="Registre-se" class="btn btn-success btn-block mt-2"> 
                         </div>
+
                         <div class="col">
                             <a href="<?php echo URLROOT; ?>/users/login" class="btn btn-light btn-block">Já tem uma conta? Login</a>
                         </div>
