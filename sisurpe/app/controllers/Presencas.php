@@ -49,7 +49,8 @@
       $this->view('presencas/index', $data);
     }  
 
-    public function qr(){      
+    public function qr(){ 
+           
       if((!isLoggedIn())){ 
         $json_ret = array
         (
@@ -64,8 +65,22 @@
       $data = [
         'abre_presenca_id' => get('presenca_em_andamento'),
         'user_id' => get('userId')
-      ];           
+      ];   
       
+      
+      $inscricaoId = $this->abrePresencaModel->getInscricaoId($data['abre_presenca_id'])->inscricoes_id;
+      
+      if(!$this->inscritoModel->estaInscrito($inscricaoId,$data['user_id'])){
+        $json_ret = array
+        (
+          'class'=>'error', 
+          'message'=>'Você não está inscrito neste curso!',
+          'error'=>$data
+        );                     
+        echo json_encode($json_ret); 
+        die();
+      }
+
       try {        
         if($this->presencaModel->jaRegistrado($data)){
           throw new Exception('Ops! Você já tem presença neste curso!');
@@ -90,7 +105,8 @@
           'message'=>$erro,
           'error'=>true
         );                     
-        echo json_encode($json_ret);               
+        echo json_encode($json_ret);  
+        die();
       }   
     }
 

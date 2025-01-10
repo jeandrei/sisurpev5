@@ -1,6 +1,22 @@
 <?php require APPROOT . '/views/inc/header.php'; ?>
 <style>
 
+.error {
+  width: 100%;
+  background-color: red;
+  padding: 10px;
+  font-weight: bold;
+  color: white;
+}
+
+.success {
+  width: 100%;
+  background-color: green;
+  padding: 10px;
+  font-weight: bold;
+  color: white;
+}
+
 .container {
     width: 100%;
     max-width: 500px;
@@ -71,9 +87,10 @@ video {
   </div>
 </div>
 
+<div id="messageBox"></div>
+
 <!-- leitor de qr code depende da biblioteca public/js/html5-qrcode.min.js -->
-<div class="container">
-  <h1>Scan QR Codes</h1>
+<div class="container">  
   <div class="section">
       <div id="my-qr-reader">
       </div>
@@ -81,27 +98,27 @@ video {
 </div>  
 
 <script>
+
   function domReady(fn) {
     if (
         document.readyState === "complete" ||
         document.readyState === "interactive"
     ) {
-        setTimeout(fn, 1000);
+        setTimeout(fn, 2000);
     } else {
         document.addEventListener("DOMContentLoaded", fn);
     }
   }
 
   domReady(function () {
-
-    // If found you qr code
+    
     function onScanSuccess(decodeText, decodeResult) {       
       ajaxGet(decodeText);
     }
 
     let htmlscanner = new Html5QrcodeScanner(
         "my-qr-reader",
-        { fps: 10, qrbos: 250 }
+        { fps: 1, qrbos: 250 }
     );
     htmlscanner.render(onScanSuccess);
   });
@@ -116,8 +133,12 @@ video {
         user_id:urlParams.get('userId')
       },
     success: function(retorno_php){        
-        let responseObj = JSON.parse(retorno_php);
-        alert(responseObj.message);
+      let responseObj = JSON.parse(retorno_php);       
+      $("#messageBox")
+      .removeClass()      
+      .addClass(responseObj.class)                           
+      .html(responseObj.message) 
+      .fadeIn(1000).fadeOut(6000);       
       }
     });  
   }
