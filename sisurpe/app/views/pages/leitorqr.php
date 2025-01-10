@@ -123,7 +123,8 @@ video {
     htmlscanner.render(onScanSuccess);
   });
   
-  function ajaxGet(url){  
+  function ajaxGet(url){ 
+    //Para poder pegar os valores passados pela url ex ?userId=1 urlParams.get('userId')
     const urlParams = new URLSearchParams(url);    
     $.ajax({
       url: url,

@@ -7,10 +7,14 @@
 				die();
 			} 
 			$this->userModel = $this->model('User');
+      $this->grupoModel = $this->model('Grupo');
 		}     
 
-		public function index(){             
-			$limit = 10;			
+		public function index(){
+      
+      $this->getPermicao('ler',$_SESSION[SE.'_user_id']);             
+			
+      $limit = 10;			
 			$data = [
 				'titulo' => 'Busca por Usuários',
 				'description' => 'Busca por registros de Usuários'          
@@ -40,6 +44,20 @@
 			}  
 			$data['results'] =  $results;  
 			$this->view('adminusers/index', $data);
-		}   
+		}
+    
+      // Função que valida se o usuário pode ou não apagar um grupo
+      public function getPermicao($acao,$userId){      
+        if(!$this->grupoModel->getPermicao($acao,$userId,'users')){
+          flash('message', 'Você não tem permissão para '. $acao.' na tabela users.', 'error'); 
+          if($acao === 'ler'){
+            redirect('index');
+          } else {
+            redirect('pages/index');
+          }        
+          die();
+        }    	  		
+      }
+
 	}   
 ?>

@@ -6,7 +6,7 @@
       $this->db = new Database;        
     }
   
-    public function gravaInscricao($inscricoes_id,$user_id){
+    public function gravaInscricao($inscricoes_id,$user_id){      
       $this->db->query("
         INSERT INTO inscritos SET inscricoes_id = :inscricoes_id, user_id = :user_id             
       ");

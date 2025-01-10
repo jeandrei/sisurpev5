@@ -14,7 +14,7 @@
           name="inscricoes_id" 
           value="<?php echo (($data['curso']->id)) ? $data['curso']->id : $_POST['inscricoes_id']; ?>
         "> 
-        <div class="form-row">
+        <div class="form-row mb-2">
           <!--CARGA HORÁRIA-->
           <div class="form-group col-md-4">
             <label for="carga_horaria"><sup class="obrigatorio">*</sup> Carga Horária:</label>  
@@ -40,7 +40,7 @@
               <a class="btn btn-success" href="<?php echo URLROOT; ?>/presencas/index/<?php echo $data['presenca_em_andamento']->id;?>" role="button">Iniciar Presença</a>
 
             <?php else: ?>
-              <button type="submit" class="btn btn-primary mt-2">Abrir Presença</button> 
+              <button type="submit" class="btn btn-primary">Abrir Presença</button> 
             <?php endif; ?>
       </form>
     </div><!--col-md-12-->

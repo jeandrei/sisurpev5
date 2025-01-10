@@ -6,7 +6,7 @@
 			$this->db = new Database;        
 		}
 
-		public function register($data){            
+		public function register($data){              
 			$this->db->query('
 				INSERT INTO abre_presenca (inscricoes_id, carga_horaria) VALUES (:inscricoes_id, :carga_horaria)
 			');

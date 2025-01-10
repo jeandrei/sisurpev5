@@ -76,10 +76,11 @@
             } else {
               throw new Exception('Ops! Algo deu errado ao tentar gravar os dados!');
             }                 
-          } catch (Exception $e) {
-            $erro = 'Erro: '.  $e->getMessage(). "\n";
-            flash('message', $erro,'alert alert-danger');
+          } catch (Exception $e) {            
+            $erro = 'Erro: '.  $e->getMessage();
+            flash('message', $erro, 'error');         
             $this->view('abrepresencas/index', $data);
+            die();
           }
         } else {                  
           // Load the view with errors

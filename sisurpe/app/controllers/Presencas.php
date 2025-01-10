@@ -52,12 +52,11 @@
     public function qr(){ 
            
       if((!isLoggedIn())){ 
-        $json_ret = array
-        (
+        $json_ret = array(                                            
           'class'=>'error', 
-          'message'=>'Sua sessão expirou, você deve fazer o login primeiro!',
-          'error'=>$data
-        );                     
+          'message'=>'Sua sessão expirou, faça o login novamente!',
+          'error'=>false
+        );    
         echo json_encode($json_ret); 
         die();
       }    
@@ -65,8 +64,7 @@
       $data = [
         'abre_presenca_id' => get('presenca_em_andamento'),
         'user_id' => get('userId')
-      ];   
-      
+      ]; 
       
       $inscricaoId = $this->abrePresencaModel->getInscricaoId($data['abre_presenca_id'])->inscricoes_id;
       
@@ -110,7 +108,6 @@
       }   
     }
 
-
     public function qrBkp(){      
       if((!isLoggedIn())){ 
         flash('message', 'Você deve efetuar o login para ter acesso a esta página', 'error'); 
@@ -121,8 +118,7 @@
         'abre_presenca_id' => get('presenca_em_andamento'),
         'user_id' => get('userId')
       ]; 
-     
-      
+           
       try {
         if($this->presencaModel->jaRegistrado($data)){
           throw new Exception('Ops! Você já tem presença neste curso!');
@@ -150,10 +146,8 @@
           'mensagem' => $erro
         ];                               
         $this->view('presencas/confirmacaoqr',$confirmacaoArr);      
-      }
-     
-     // $this->presencaModel->register($data);
-      
+      }     
+     // $this->presencaModel->register($data);      
     }
 
     public function fechar($abre_presenca_id){ 
@@ -352,9 +346,6 @@
         die();
       }    	  		
     }
-
-
-
 
   }
   

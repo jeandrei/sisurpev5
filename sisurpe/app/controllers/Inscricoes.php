@@ -16,6 +16,20 @@
       $this->grupoModel = $this->model('Grupo');
     }
 
+    //Valida o id para excluir ou editar
+    public function validaId($id){      
+			if(!is_numeric($id)){
+				flash('message', 'ID inválido.', 'error'); 
+        redirect('inscricoes/index');
+        die();			
+			} else if(!$data = $this->inscricaoModel->getInscricaoById($id)) {        
+        flash('message', 'Inscrição inexistente.', 'error'); 
+        redirect('inscricoes/index');
+        die();	
+      }
+      return $data;
+    }    
+
     public function index(){ 
       unset($data);
       $inscricoesArr = $this->inscricaoModel->getInscricoes();
@@ -53,6 +67,7 @@
     }  
 
     public function arquivadas(){ 
+      $this->getPermicao('ler',$_SESSION[SE.'_user_id']);
       if(isset($_GET['page'])) {  
         $page = $_GET['page'];  
       } else {  
@@ -80,7 +95,9 @@
       $this->view('inscricoes/arquivadas', $data);
     }  
 
-    public function reabrir($inscricoes_id){
+    public function reabrir($inscricoes_id){      
+      $inscricao = $this->validaId($inscricoes_id);      
+      $this->getPermicao('editar',$_SESSION[SE.'_user_id']);
       $id = $this->inscricaoModel->reabreInscricao($inscricoes_id);
       redirect('inscricoes/index/');
     }
@@ -348,9 +365,7 @@
     }//add
 
     public function edit($id){  
-
       $modelosCertificados = $this->certificadoModel->getCertificados();
-
       if($_SERVER['REQUEST_METHOD'] == 'POST'){           
         $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING); 
         $temas = $this->temaModel->getTemasInscricoesById($id); 
@@ -598,13 +613,13 @@
         'usuario' => $this->userModel->getUserById($_SESSION[SE . '_user_id']),
         'inscritos' => $this->inscritoModel->getInscritos($inscricoes_id),
         'todosPresentes' => $this->presencaModel->todosPresentes($abrePresenca_id)
-      ];   
-      
+      ];  
       $this->view('inscricoes/gerenciarPresencas', $data);      
     }
 
     /* carrega o formulário para que o  administrador selecione a inscrição que deseja inscrever um usuário*/
-    public function inscreverUsuario($user_Id){     
+    public function inscreverUsuario($user_Id){        
+      $this->getPermicao('ler',$_SESSION[SE.'_user_id']);
       $data = [
         'titulo' => 'Inscrição de usuário',
         'user' => $this->userModel->getUserById($user_Id),        
@@ -614,19 +629,17 @@
     }
 
     /* quando a inscrição do usuário é feita pelo administrador */
-    public function registrarInscricao(){  
-      
-      if(empty($_POST['userId'])){
+    public function registrarInscricao(){ 
+      if(empty(post('userId'))){
         $error['userId_err'] = 'Ops! Algo deu errado ao selecionar o usuário! Tente novamente.';
-      }
-      
-      if(empty($_POST['inscricaoId'])){
+      } else {
+        $user_Id = post('userId');
+      }      
+      if(empty(post('inscricaoId')) || post('inscricaoId') == 'NULL'){
         $error['inscricaoId_err'] = 'Selecione uma inscrição!';
-      }       
-      
-      $user_Id = post('userId');
-      $inscricaoId = post('inscricaoId');   
-
+      } else {
+        $inscricaoId = post('inscricaoId'); 
+      }      
       if(
         empty($error['userId_err']) &&
         empty($error['inscricaoId_err'])
@@ -655,7 +668,7 @@
               die() ;
             }
             /* defino uma variável erro como null */
-            $erro_presenca == NULL;
+            $erro_presenca = NULL;
             /* para cada abrepresença registro a presença exemplo se for duas abrepersença de 4 horas vai registrar nas duas */
             foreach($abrepresenca as $row){
               $data['abre_presenca_id'] = $row->id;
@@ -666,14 +679,14 @@
             }            
             /* se não tem nenhum erro dentro de erro_presenca é que deu tudo certo*/
             //echo ($erro_presenca);
-            if($erro_presenca == NULL){
-              $json_ret = array(                                            
+            if($erro_presenca === NULL){              
+              $json_ret = array(
                 'class'=>'success', 
                 'message'=>'Inscrição realizada com sucesso!',
                 'error'=>false
-              );                               
+              );                     
               echo json_encode($json_ret); 
-              die();
+              die() ;
             } else {
               throw new Exception('Ops! Algo deu errado ao tentar registrar a presença!');
             }  
@@ -691,16 +704,17 @@
         }        
       } else {
         $json_ret = array(
-          'class'=>'alert alert-danger', 
-          'message'=>'Erro ao tentar realizar a inscrição tente novamente mais tarde' . $e->getMessage(),
+          'class'=>'error', 
+          'message'=>$error['inscricaoId_err'],
           'error'=>true
-        );
-        echo json_encode($json_ret);
-        die();
+        );                     
+        echo json_encode($json_ret); 
+        die() ;     
       }         
     }  
     
     public function confirm($id){ 
+      $inscricao = $this->validaId($id);
       $data = [
         'id' => $id,
         'inscricao' => $this->inscricaoModel->getInscricaoById($id)
@@ -708,13 +722,9 @@
       $this->view('inscricoes/confirm',$data);
     }
 
-    public function delete($id){      
-      //VALIDAÇÃO DO ID
-      if(!is_numeric($id)){
-        flash('message', 'Id inválido!', 'error'); 
-        redirect('inscricoes/arquivadas');
-        die();
-      }    
+    public function delete($id){          
+      $inscricao = $this->validaId($id);
+      $this->getPermicao('apagar',$_SESSION[SE.'_user_id']);    
       if(isset($_POST['delete'])){
         if($this->inscricaoModel->delete($id)){
             flash('message', 'Inscrição excluida com sucessso!', 'success'); 
@@ -734,7 +744,7 @@
     // Função que valida se o usuário pode ou não apagar um grupo
     public function getPermicao($acao,$userId){      
       if(!$this->grupoModel->getPermicao($acao,$userId,'inscricoes')){
-        flash('message', 'Você não tem permissão para '. $acao.' na tabela grupo.', 'error'); 
+        flash('message', 'Você não tem permissão para '. $acao.' na tabela inscrições.', 'error'); 
         if($acao === 'ler'){
           redirect('index');
         } else {

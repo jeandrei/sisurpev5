@@ -1,6 +1,6 @@
 <?php require APPROOT . '/views/inc/header.php'; ?>
 
-  <?php flash('mensagem');?>
+  <?php flash('message');?>
 
   <!-- SE FOR UM USUÁRIO ADMIN OU SEC ADICIONO O BOTÃO CRIAR INSCRIÇÃO -->
   <?php if(getPermission('inscricoes','criar')) : ?>

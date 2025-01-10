@@ -110,7 +110,10 @@
 			}
 		}
 
-		public function edit($user_id){	 
+		public function edit($user_id){	
+      
+      $this->getPermicao('editar',$_SESSION[SE.'_user_id']);
+
 			$user = $this->userModel->getUserById($user_id); 				           
 			if($_SERVER['REQUEST_METHOD'] == 'POST'){					
 				$_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
@@ -166,8 +169,9 @@
 						if($this->userModel->update($data)){
 							// Cria a menságem antes de chamar o view va para 
 							// views/users/login a segunda parte da menságem
-							flash('mensagem', 'Usuário atualizado com sucesso!');                        
+							flash('message', 'Usuário atualizado com sucesso!');                        
 							redirect('adminusers/index');
+              die();
 						} else {
 							die('Ops! Algo deu errado.');
 						}								
@@ -561,6 +565,19 @@
         flash('message', $erro,'error');
         $this->view('users/grupos',$data);
       }      
+    }
+
+     // Função que valida se o usuário pode ou não apagar um grupo
+     public function getPermicao($acao,$userId){      
+      if(!$this->grupoModel->getPermicao($acao,$userId,'users')){
+        flash('message', 'Você não tem permissão para '. $acao.' na tabela users.', 'error'); 
+        if($acao === 'ler'){
+          redirect('index');
+        } else {
+          redirect('pages/index');
+        }        
+        die();
+      }    	  		
     }
 	}   
 ?>
