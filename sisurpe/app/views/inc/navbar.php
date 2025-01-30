@@ -90,27 +90,25 @@ function getPermition($table,$action){
         
         <li class="nav-item">
           <a class="nav-link" href="<?php echo URLROOT; ?>/datausers/show">Alunos</a>
-        </li> 
-        <?php if(getPermition('inscricoes','ler')) : ?>
+        </li>         
         <li class="nav-item">
           <a class="nav-link" href="<?php echo URLROOT; ?>/inscricoes/index">Inscrições</a>
-        </li> 
-        <?php endif; ?> 
+        </li>       
       </ul>
       <?php endif;?>
 
 
       <ul class="navbar-nav ml-auto">
-        <?php if(isset($_SESSION[DB_NAME . '_user_id'])) : ?>
+        <?php if(isset($_SESSION[SE . '_user_id'])) : ?>
 
           <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarBemVindo" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Bem vindo <?php echo $_SESSION[DB_NAME . '_user_name']; ?>
+              Bem vindo <?php echo $_SESSION[SE . '_user_name']; ?>
               </a>
               <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarBemVindo">
                 <a class="dropdown-item" href="<?php echo URLROOT; ?>/users/alterasenha">Alterar a Senha</a>
-                <a class="dropdown-item" href="<?php echo URLROOT; ?>/fuserescolaanos/userEscolaAno/<?php echo $_SESSION[DB_NAME . '_user_id']; ?>">Dados do Servidor</a>                          
-                <a class="dropdown-item" href="<?php echo URLROOT; ?>/userscertificados/index/<?php echo $_SESSION[DB_NAME . '_user_id']; ?>">Meus Certificados</a>
+                <a class="dropdown-item" href="<?php echo URLROOT; ?>/fuserescolaanos/userEscolaAno/<?php echo $_SESSION[SE . '_user_id']; ?>">Dados do Servidor</a>                          
+                <a class="dropdown-item" href="<?php echo URLROOT; ?>/userscertificados/index/<?php echo $_SESSION[SE . '_user_id']; ?>">Meus Certificados</a>
               </div>
           </li>  
           

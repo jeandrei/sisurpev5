@@ -29,7 +29,7 @@
   }
 
 	function isLoggedIn(){
-		if(isset($_SESSION[DB_NAME . '_user_id'])){       
+		if(isset($_SESSION[SE . '_user_id'])){       
 			return true;
 		} else {
 			return false;
@@ -37,34 +37,10 @@
 	}
 
 	function isAdmin(){
-		if((isset($_SESSION[DB_NAME . '_user_type'])) && ($_SESSION[DB_NAME . '_user_type']) == 'admin'){
+		if((isset($_SESSION[SE . '_user_type'])) && ($_SESSION[SE . '_user_type']) == 'admin'){
 			return true;
 		} else {
 			return false;
 		}
-	}
-
-	function isUser(){
-		if((isset($_SESSION[DB_NAME . '_user_type'])) && ($_SESSION[DB_NAME . '_user_type']) == 'user'){
-			return true;
-		} else {
-			return false;
-		}
-	}
-
-	function isSec(){
-		if((isset($_SESSION[DB_NAME . '_user_type'])) && ($_SESSION[DB_NAME . '_user_type']) == 'sec'){
-			return true;
-		} else {
-			return false;
-		}
-	}
-
-	function isColeta(){
-		if((isset($_SESSION[DB_NAME . '_user_type'])) && ($_SESSION[DB_NAME . '_user_type']) == 'coleta'){
-			return true;
-		} else {
-			return false;
-		}
-	}
+	}	
 ?>
