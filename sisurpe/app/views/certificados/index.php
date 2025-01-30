@@ -60,35 +60,32 @@
                     <div class="card-body">                    
                       <div class="d-flex justify-content-between align-items-center">
                         <div class="btn-group">
-                          <button type="button" class="btn btn-sm btn-outline-secondary" data-toggle="modal" data-target="#<?php echo 'modal'.$key?>">Ver</button>  
+                          <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#<?php echo 'modal'.$key?>">Ver</button>                           
                           <a href="<?php echo URLROOT.'/certificados/delete&arquivo='.$modelo['arquivo'];?>" class="btn btn-sm btn-outline-secondary">Excluir</a>
                           <a href="<?php echo 'javascript:selectImage(\''.$modelo['arquivo'].'\')';?>" class="btn btn-sm btn-outline-secondary">Copiar</a>
                         </div>                      
                       </div>
                     </div>
                   </div>
-                </div>
-
+                </div>    
                 <!-- Modal -->
-                <div class="modal fade bd-example-modal-lg" id="modal<?php echo $key;?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                <div class="modal modal-lg fade" id="modal<?php echo $key;?>" tabindex="-1" aria-labelledby="modal<?php echo $key;?>Label" aria-hidden="true">
+                  <div class="modal-dialog">
                     <div class="modal-content">
                       <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLongTitle">Ver Imagem</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                          <span aria-hidden="true">&times;</span>
-                        </button>
+                        <h5 class="modal-title" id="modal<?php echo $key;?>Label">Arquivo: <?php echo $modelo['nome'];?></h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                       </div>
                       <div class="modal-body">
                         <img class="img-fluid" src="<?php echo $modelo['url'];?>" alt="">
                       </div>
                       <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>                      
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>                        
                       </div>
                     </div>
                   </div>
                 </div>
-                <!-- Modal -->
+                <!-- Modal -->                
               <? endforeach; ?>  
             <?php endif;?>
             
@@ -100,7 +97,7 @@
 
 <!-- copia a url da imagem para localstorage -->
 <script type="text/javascript">
-    function selectImage(imgName){
+    function selectImage(imgName){      
     var url = imgName; 
     localStorage.removeItem("imgUrl");
     localStorage.setItem("imgUrl",url); 
