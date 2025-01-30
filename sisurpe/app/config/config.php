@@ -34,7 +34,7 @@ define('APPVERSION', '1.0.1');
 define('SE','sisurpe');
 
 //Certificado padrão
-define('CERTPADRAO', URLROOT . '/uploads/modeloCertificados/padrao.jpg');
+define('CERTPADRAO', URLROOT . '/uploads/modeloCertificados/CERTIFICADOCIDA.jpg');
 
 //crio uma const com a data atual para eu usar no código
 $hoje = new DateTime('now', new DateTimeZone('America/Sao_Paulo'));
