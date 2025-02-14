@@ -270,16 +270,20 @@
       // da consulta na tabela users 
       // SE é uma constante que vem lá do config\config.php
       // para evitar que dois sistemas diferentes fiquem logados com o mesmo login  
-      $userPermit = $this->userModel->getUserPermitions($user->id);
-      foreach($userPermit as $permicao){
-        $permitArr[$permicao->tabela] = 
-        [          
-          'ler' => $permicao->ler,
-          'editar' => $permicao->editar,
-          'criar' => $permicao->criar,
-          'apagar' => $permicao->apagar
-        ]; 
-      }      
+      if($userPermit = $this->userModel->getUserPermitions($user->id)){
+        foreach($userPermit as $permicao){
+          $permitArr[$permicao->tabela] = 
+          [          
+            'ler' => $permicao->ler,
+            'editar' => $permicao->editar,
+            'criar' => $permicao->criar,
+            'apagar' => $permicao->apagar
+          ]; 
+        }    
+      } else {
+        $permitArr = null; 
+      }
+        
 
       $_SESSION[SE.'_user_permit'] = $permitArr;
 			$_SESSION[SE.'_user_id'] = $user->id;
